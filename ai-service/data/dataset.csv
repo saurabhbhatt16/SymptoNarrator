@@ -1,0 +1,156 @@
+Disease_ID,Disease_Name,Symptoms,Specialist_Doctor,Disease_Category,Treatment_Plan,Medicines,Severity,Disease_Type,Min_Recovery_Days,Max_Recovery_Days,Prevalence
+DIS001,Flu (Influenza),Fever; Cough; Fatigue; Muscle aches,General Physician,Respiratory,Rest; Hydration; Antiviral therapy,Paracetamol; Ibuprofen; Oseltamivir,Moderate,Viral,3,7,Common
+DIS002,Common Cold,Sneezing; Runny nose; Sore throat,General Physician,Respiratory,Rest; Fluids; Decongestants,Antihistamine; Paracetamol; Phenylephrine,Mild,Viral,7,10,Very Common
+DIS003,Asthma,Shortness of breath; Wheezing; Chest tightness,Pulmonologist,Respiratory,Inhaler therapy; Avoid triggers,Salbutamol; Budesonide; Formoterol,Moderate,Chronic,30,90,Common
+DIS004,Bronchitis,Cough with mucus; Fatigue; Chest discomfort,Pulmonologist,Respiratory,Rest; Medication; Steam inhalation,Azithromycin; Amoxicillin; Dextromethorphan,Moderate,Viral/Bacterial,7,14,Common
+DIS005,Pneumonia,Fever; Chest pain; Cough with phlegm,Pulmonologist,Respiratory,Antibiotics; Oxygen therapy; Rest,Amoxicillin; Azithromycin; Ceftriaxone,Severe,Bacterial,14,21,Moderate
+DIS006,Tuberculosis,Chronic cough; Weight loss; Night sweats,Pulmonologist,Respiratory,Long-term antibiotic therapy (6 months),Rifampicin; Isoniazid; Ethambutol,Severe,Bacterial,180,270,Less Common
+DIS007,COVID-19,Fever; Cough; Breathlessness; Loss of smell,General Physician,Respiratory,Isolation; Supportive care; Oxygen,Paracetamol; Ivermectin; Dexamethasone,Moderate,Viral,14,28,Common
+DIS008,Sinusitis,Facial pain; Nasal congestion; Headache,ENT Specialist,Respiratory,Steam therapy; Nasal irrigation,Amoxicillin; Clavulanate; Ibuprofen,Mild,Bacterial/Viral,7,14,Common
+DIS009,Pleuritis,Sharp chest pain; Difficulty breathing,Pulmonologist,Respiratory,Anti-inflammatories; Treat underlying cause,Ibuprofen; Naproxen; Corticosteroids,Moderate,Inflammatory,14,30,Less Common
+DIS010,COPD,Chronic cough; Breathlessness; Wheezing,Pulmonologist,Respiratory,Bronchodilators; Pulmonary rehab; Quit smoking,Tiotropium; Salmeterol; Prednisolone,Severe,Chronic,30,90,Common
+DIS011,Hypertension,High blood pressure; Headache; Blurred vision,Cardiologist,Cardiovascular,Lifestyle changes; Medication,Amlodipine; Losartan; Atenolol,Moderate,Chronic,30,90,Very Common
+DIS012,Heart Attack,Chest pain; Sweating; Jaw pain; Shortness of breath,Cardiologist,Cardiovascular,Angioplasty; Thrombolysis; ICU care,Aspirin; Clopidogrel; Atorvastatin,Critical,Acute,30,60,Moderate
+DIS013,Stroke,Paralysis; Confusion; Vision loss; Speech difficulty,Neurologist,Cardiovascular,Emergency care; Physiotherapy; Rehabilitation,Clopidogrel; Aspirin; Alteplase,Critical,Acute,30,90,Moderate
+DIS014,Heart Failure,Breathlessness; Swollen legs; Fatigue,Cardiologist,Cardiovascular,Medication; Low-salt diet; Fluid restriction,Furosemide; Enalapril; Carvedilol,Severe,Chronic,30,90,Moderate
+DIS015,Arrhythmia,Irregular heartbeat; Palpitations; Dizziness,Cardiologist,Cardiovascular,Medication; Cardioversion; Pacemaker,Amiodarone; Metoprolol; Digoxin,Moderate,Chronic,30,60,Common
+DIS016,Angina,Chest tightness; Pressure; Radiating arm pain,Cardiologist,Cardiovascular,Nitrates; Lifestyle changes; Angioplasty,Nitroglycerine; Aspirin; Bisoprolol,Moderate,Chronic,30,60,Common
+DIS017,Peripheral Artery Disease,Leg pain on walking; Cold feet; Numbness,Vascular Surgeon,Cardiovascular,Lifestyle changes; Angioplasty; Surgery,Aspirin; Clopidogrel; Statins,Moderate,Chronic,30,90,Moderate
+DIS018,Varicose Veins,Swollen veins; Leg pain; Itching,Vascular Surgeon,Cardiovascular,Compression stockings; Sclerotherapy,Compression stockings; Analgesics; Aspirin,Mild,Chronic,30,60,Common
+DIS019,Deep Vein Thrombosis,Leg swelling; Redness; Warmth,Vascular Surgeon,Cardiovascular,Anticoagulants; Compression; Elevation,Heparin; Warfarin; Rivaroxaban,Severe,Acute,14,30,Less Common
+DIS020,Atherosclerosis,Chest pain; Leg pain; High cholesterol,Cardiologist,Cardiovascular,Statins; Diet; Exercise; Angioplasty,Atorvastatin; Rosuvastatin; Aspirin,Severe,Chronic,90,180,Common
+DIS021,Diabetes Type 1,High blood sugar; Frequent urination; Weight loss,Endocrinologist,Endocrine,Insulin therapy; Diet management,Insulin; Metformin; Glimepiride,Severe,Chronic,90,365,Moderate
+DIS022,Diabetes Type 2,Fatigue; Blurred vision; Slow wound healing,Endocrinologist,Endocrine,Diet; Exercise; Oral hypoglycemics,Metformin; Sitagliptin; Dapagliflozin,Moderate,Chronic,90,365,Very Common
+DIS023,Thyroid Disorder (Hypo),Weight gain; Fatigue; Cold intolerance,Endocrinologist,Endocrine,Hormone replacement therapy,Levothyroxine; Liothyronine; Selenium,Moderate,Chronic,30,90,Common
+DIS024,Thyroid Disorder (Hyper),Weight loss; Sweating; Rapid heartbeat,Endocrinologist,Endocrine,Antithyroid drugs; Radioiodine therapy,Propylthiouracil; Methimazole; Atenolol,Moderate,Chronic,30,90,Common
+DIS025,Obesity,Weight gain; Fatigue; Joint pain,General Physician,Endocrine,Diet; Exercise; Behavioral therapy,Orlistat; Metformin; Topiramate,Moderate,Chronic,180,365,Very Common
+DIS026,Gout,Joint inflammation; Severe pain; Redness,Orthopedic,Endocrine,Diet control; Medication; Hydration,Allopurinol; Colchicine; Naproxen,Moderate,Chronic,14,30,Common
+DIS027,Cushing's Syndrome,Weight gain; Moon face; High BP; Purple stretch marks,Endocrinologist,Endocrine,Cortisol-lowering drugs; Surgery,Metyrapone; Ketoconazole; Mitotane,Severe,Chronic,90,180,Less Common
+DIS028,Addison's Disease,Fatigue; Skin darkening; Low BP,Endocrinologist,Endocrine,Hormone replacement,Hydrocortisone; Fludrocortisone; Dexamethasone,Severe,Chronic,90,365,Rare
+DIS029,Gastritis,Stomach pain; Nausea; Bloating,Gastroenterologist,Digestive,Antacids; Dietary changes; H. pylori treatment,Omeprazole; Pantoprazole; Ranitidine,Mild,Bacterial/Inflammatory,7,21,Very Common
+DIS030,Peptic Ulcer,Stomach burning; Pain; Nausea,Gastroenterologist,Digestive,Medication; Dietary changes; Avoid NSAIDs,Ranitidine; Omeprazole; Sucralfate,Moderate,Bacterial/Chemical,30,60,Common
+DIS031,Diarrhea,Loose stools; Dehydration; Cramps,General Physician,Digestive,Oral fluids; Rest; Probiotics,ORS; Loperamide; Zinc,Mild,Viral/Bacterial,3,7,Very Common
+DIS032,Constipation,Difficulty in passing stools; Bloating,General Physician,Digestive,Fiber diet; Fluids; Exercise,Lactulose; Psyllium; Bisacodyl,Mild,Lifestyle,3,14,Very Common
+DIS033,Food Poisoning,Vomiting; Diarrhea; Stomach cramps,General Physician,Digestive,Rehydration; Rest; Antibiotics if severe,Ondansetron; Metronidazole; ORS,Moderate,Bacterial/Toxin,1,5,Common
+DIS034,Hepatitis A,Jaundice; Fatigue; Nausea; Dark urine,Hepatologist,Digestive,Rest; Supportive care; Avoid alcohol,Ursodeoxycholic acid; Silymarin; Vitamins,Moderate,Viral,14,60,Moderate
+DIS035,Hepatitis B,Jaundice; Fatigue; Liver pain,Hepatologist,Digestive,Antiviral therapy; Diet; Monitoring,Tenofovir; Entecavir; Interferon,Severe,Viral,90,180,Moderate
+DIS036,Liver Cirrhosis,Ascites; Jaundice; Easy bruising,Hepatologist,Digestive,Treat underlying cause; Low-salt diet,Propranolol; Spironolactone; Lactulose,Severe,Chronic,90,365,Moderate
+DIS037,Pancreatitis,Abdominal pain; Nausea; Fever,Gastroenterologist,Digestive,Hospital care; IV fluids; NPO,Analgesics; IV Fluids; Antibiotics,Severe,Inflammatory,7,21,Less Common
+DIS038,Gallstones,Abdominal pain; Nausea; Jaundice,Gastroenterologist,Digestive,Surgery; Medication; Dietary fat restriction,Ursodiol; Analgesics; Antibiotics,Moderate,Structural,7,30,Common
+DIS039,Appendicitis,Severe abdominal pain; Fever; Nausea,Gastroenterologist,Digestive,Surgical removal (appendectomy),No medicine (surgical emergency),Critical,Acute,1,3,Common
+DIS040,GERD,Heartburn; Acid reflux; Regurgitation,Gastroenterologist,Digestive,Proton pump inhibitors; Lifestyle changes,Omeprazole; Esomeprazole; Antacids,Mild,Chronic,30,90,Very Common
+DIS041,Irritable Bowel Syndrome,Abdominal cramps; Diarrhea; Constipation,Gastroenterologist,Digestive,Diet changes; Stress management; Medication,Mebeverine; Loperamide; Amitriptyline,Mild,Chronic,30,90,Common
+DIS042,Crohn's Disease,Diarrhea; Abdominal pain; Weight loss,Gastroenterologist,Digestive,Anti-inflammatory drugs; Immunosuppressants,Mesalazine; Azathioprine; Infliximab,Severe,Autoimmune,90,365,Less Common
+DIS043,Migraine,Throbbing headache; Nausea; Light sensitivity,Neurologist,Neurological,Pain management; Avoid triggers; Triptans,Sumatriptan; Naproxen; Ibuprofen,Moderate,Neurological,1,3,Very Common
+DIS044,Epilepsy,Seizures; Loss of consciousness; Convulsions,Neurologist,Neurological,Anticonvulsants; Avoid triggers; Surgery,Valproate; Carbamazepine; Phenytoin,Severe,Chronic,90,365,Common
+DIS045,Parkinson's Disease,Tremors; Stiffness; Slow movement,Neurologist,Neurological,Medication; Physiotherapy; DBS surgery,Levodopa; Carbidopa; Amantadine,Severe,Chronic,90,365,Moderate
+DIS046,Alzheimer's Disease,Memory loss; Confusion; Personality changes,Neurologist,Neurological,Therapy; Medication; Caregiver support,Donepezil; Memantine; Galantamine,Severe,Chronic,90,365,Moderate
+DIS047,Multiple Sclerosis,Weakness; Vision loss; Coordination issues,Neurologist,Neurological,Immunomodulators; Physiotherapy; Steroids,Interferon beta; Glatiramer; Natalizumab,Severe,Autoimmune,90,365,Less Common
+DIS048,Meningitis,Severe headache; Neck stiffness; Fever; Rash,Neurologist,Neurological,Hospital care; IV Antibiotics; Steroids,Ceftriaxone; Dexamethasone; Acyclovir,Critical,Bacterial/Viral,7,21,Less Common
+DIS049,Bell's Palsy,Facial drooping; Weakness; Eye dryness,Neurologist,Neurological,Corticosteroids; Physiotherapy; Eye care,Prednisolone; Acyclovir; Artificial tears,Moderate,Neurological,14,42,Less Common
+DIS050,Sciatica,Radiating leg pain; Numbness; Tingling,Neurologist,Neurological,Physiotherapy; Medication; Rest,Ibuprofen; Gabapentin; Diclofenac,Moderate,Musculoskeletal,14,30,Common
+DIS051,Tension Headache,Band-like head pressure; Neck stiffness,Neurologist,Neurological,Pain relievers; Stress management,Paracetamol; Ibuprofen; Amitriptyline,Mild,Lifestyle,1,3,Very Common
+DIS052,Narcolepsy,Excessive daytime sleepiness; Sudden muscle weakness,Neurologist,Neurological,Medication; Sleep hygiene; Lifestyle changes,Modafinil; Sodium oxybate; Methylphenidate,Moderate,Chronic,30,90,Rare
+DIS053,Arthritis (Rheumatoid),Joint pain; Swelling; Morning stiffness,Orthopedic,Musculoskeletal,Anti-inflammatory drugs; DMARDs; Physiotherapy,Methotrexate; Hydroxychloroquine; Etanercept,Moderate,Autoimmune,90,365,Common
+DIS054,Osteoarthritis,Joint pain; Stiffness; Reduced range of motion,Orthopedic,Musculoskeletal,Physiotherapy; Pain management; Joint replacement,Ibuprofen; Diclofenac; Paracetamol,Moderate,Chronic,90,365,Very Common
+DIS055,Osteoporosis,Weak bones; Fractures; Back pain,Orthopedic,Musculoskeletal,Calcium supplements; Bisphosphonates; Exercise,Calcium; Vitamin D; Alendronate,Moderate,Chronic,90,365,Common
+DIS056,Back Pain (Lower),Lower back ache; Stiffness; Muscle spasm,Orthopedic,Musculoskeletal,Physiotherapy; Hot/cold packs; Medication,Diclofenac; Ibuprofen; Paracetamol,Mild,Musculoskeletal,7,21,Very Common
+DIS057,Fracture,Bone break; Pain; Swelling; Deformity,Orthopedic,Musculoskeletal,Casting; Surgery; Immobilization,Calcium; Vitamin D; Analgesics,Moderate,Acute,42,90,Common
+DIS058,Spondylitis (Ankylosing),Back pain; Spinal stiffness; Fatigue,Orthopedic,Musculoskeletal,Physiotherapy; NSAIDs; Biologics,Naproxen; Indomethacin; Adalimumab,Severe,Autoimmune,90,365,Less Common
+DIS059,Carpal Tunnel Syndrome,Wrist pain; Numbness; Tingling in hand,Orthopedic,Musculoskeletal,Splinting; Corticosteroids; Surgery,Ibuprofen; Prednisolone; Vitamin B6,Mild,Musculoskeletal,30,90,Common
+DIS060,Fibromyalgia,Widespread pain; Fatigue; Sleep disturbances,Rheumatologist,Musculoskeletal,Exercise; Sleep therapy; Pain management,Duloxetine; Pregabalin; Amitriptyline,Moderate,Chronic,90,365,Less Common
+DIS061,Skin Allergy,Rash; Itching; Redness; Hives,Dermatologist,Dermatological,Antihistamines; Avoid allergens,Cetirizine; Loratadine; Hydrocortisone,Mild,Allergic,3,7,Very Common
+DIS062,Eczema (Atopic Dermatitis),Dry skin; Itching; Red patches,Dermatologist,Dermatological,Moisturizers; Corticosteroids; Avoid triggers,Hydrocortisone; Betamethasone; Tacrolimus,Moderate,Autoimmune,30,90,Common
+DIS063,Psoriasis,Red scaly patches; Itching; Skin inflammation,Dermatologist,Dermatological,Topical therapy; Phototherapy; Biologics,Calcipotriol; Clobetasol; Methotrexate,Moderate,Autoimmune,30,90,Common
+DIS064,Acne,Pimples; Blackheads; Skin inflammation,Dermatologist,Dermatological,Topical creams; Antibiotics; Retinoids,Benzoyl peroxide; Adapalene; Clindamycin,Mild,Inflammatory,30,90,Very Common
+DIS065,Rosacea,Facial redness; Bumps; Visible blood vessels,Dermatologist,Dermatological,Topical medication; Avoid triggers; Sun protection,Metronidazole; Azelaic acid; Doxycycline,Mild,Chronic,30,90,Common
+DIS066,Fungal Infection (Ringworm),Ring-shaped rash; Itching; Scaling,Dermatologist,Dermatological,Antifungal creams; Oral antifungals,Clotrimazole; Terbinafine; Fluconazole,Mild,Fungal,14,30,Very Common
+DIS067,Chickenpox,Fluid-filled rash; Fever; Itching,General Physician,Dermatological,Symptomatic care; Antiviral if severe,Acyclovir; Calamine lotion; Paracetamol,Moderate,Viral,7,14,Common
+DIS068,Shingles (Herpes Zoster),Painful rash; Burning; Blisters along nerve path,Dermatologist,Dermatological,Antiviral drugs; Pain management,Acyclovir; Valacyclovir; Gabapentin,Moderate,Viral,14,30,Common
+DIS069,Hair Loss (Alopecia),Thinning hair; Bald patches,Dermatologist,Dermatological,Topical treatment; Oral medication; PRP therapy,Minoxidil; Finasteride; Biotin,Mild,Autoimmune/Hormonal,90,180,Common
+DIS070,Urticaria (Hives),Raised welts; Itching; Redness,Dermatologist,Dermatological,Antihistamines; Avoid triggers,Cetirizine; Fexofenadine; Prednisolone,Mild,Allergic,1,7,Common
+DIS071,Kidney Stones,Severe flank pain; Blood in urine; Nausea,Nephrologist,Renal,Hydration; Lithotripsy; Surgery,Sodium citrate; Tamsulosin; Ibuprofen,Moderate,Metabolic,7,30,Common
+DIS072,Urinary Tract Infection,Burning urination; Frequent urge; Cloudy urine,Urologist,Renal,Antibiotics; Hydration; Pain relief,Nitrofurantoin; Ciprofloxacin; Fosfomycin,Mild,Bacterial,3,7,Very Common
+DIS073,Chronic Kidney Disease,Fatigue; Swelling; Decreased urine output,Nephrologist,Renal,Dietary restriction; Medication; Dialysis,Erythropoietin; Furosemide; Lisinopril,Severe,Chronic,90,365,Moderate
+DIS074,Prostate Enlargement (BPH),Urinary frequency; Weak stream; Incomplete emptying,Urologist,Renal,Medication; Lifestyle; Surgery,Tamsulosin; Finasteride; Dutasteride,Moderate,Structural,30,90,Common
+DIS075,Incontinence,Involuntary urine leakage; Urgency,Urologist,Renal,Pelvic floor exercises; Medication; Surgery,Oxybutynin; Tolterodine; Mirabegron,Mild,Neurological/Structural,30,90,Common
+DIS076,Nephrotic Syndrome,Proteinuria; Edema; Hypoalbuminemia,Nephrologist,Renal,Steroids; Low-salt diet; ACE inhibitors,Prednisolone; Furosemide; Lisinopril,Severe,Autoimmune,30,90,Less Common
+DIS077,Conjunctivitis (Pink Eye),Red eyes; Discharge; Itching,Ophthalmologist,Ophthalmic,Eye drops; Cold compresses; Hygiene,Moxifloxacin; Chloramphenicol; Lubricants,Mild,Viral/Bacterial,3,7,Very Common
+DIS078,Glaucoma,Vision loss; Eye pressure; Tunnel vision,Ophthalmologist,Ophthalmic,Eye drops; Laser therapy; Surgery,Timolol; Latanoprost; Brimonidine,Severe,Chronic,90,365,Common
+DIS079,Cataract,Blurred vision; Glare; Color fading,Ophthalmologist,Ophthalmic,Surgical removal; IOL implantation,No medicine (surgical),Moderate,Age-related,1,3,Common
+DIS080,Diabetic Retinopathy,Blurred vision; Floaters; Vision loss,Ophthalmologist,Ophthalmic,Laser treatment; Injections; Control diabetes,Ranibizumab; Bevacizumab; Triamcinolone,Severe,Diabetic complication,30,90,Moderate
+DIS081,Dry Eye Syndrome,Burning eyes; Blurred vision; Redness,Ophthalmologist,Ophthalmic,Artificial tears; Omega-3; Punctal plugs,Cyclosporine drops; Lubricants; Omega-3,Mild,Chronic,30,90,Common
+DIS082,Stye (Hordeolum),Red lump on eyelid; Pain; Swelling,Ophthalmologist,Ophthalmic,Warm compresses; Antibiotic drops,Erythromycin ointment; Chloramphenicol; Analgesics,Mild,Bacterial,3,7,Common
+DIS083,Ear Infection (Otitis),Ear pain; Discharge; Hearing loss,ENT Specialist,ENT,Antibiotics; Ear drops; Warmth,Ofloxacin; Amoxicillin; Ibuprofen,Mild,Bacterial,5,10,Common
+DIS084,Tonsillitis,Sore throat; Swollen tonsils; Fever,ENT Specialist,ENT,Antibiotics; Rest; Gargling,Amoxicillin; Azithromycin; Ibuprofen,Mild,Bacterial,5,10,Very Common
+DIS085,Allergic Rhinitis,Sneezing; Runny nose; Itchy eyes,ENT Specialist,ENT,Antihistamines; Nasal sprays; Avoid allergens,Loratadine; Cetirizine; Fexofenadine,Mild,Allergic,7,30,Very Common
+DIS086,Hearing Loss,Reduced hearing; Tinnitus; Muffled sounds,ENT Specialist,ENT,Hearing aids; Medication; Surgery,Corticosteroids; Betahistine; Diuretics,Moderate,Chronic,30,90,Common
+DIS087,Nasal Polyps,Nasal blockage; Reduced smell; Runny nose,ENT Specialist,ENT,Corticosteroids; Surgery; Treat allergies,Mometasone spray; Prednisolone; Antihistamines,Moderate,Inflammatory,30,90,Less Common
+DIS088,Vertigo (BPPV),Dizziness; Spinning sensation; Nausea,ENT Specialist,ENT,Epley maneuver; Vestibular rehab; Medication,Betahistine; Dimenhydrinate; Prochlorperazine,Moderate,Neurological,7,30,Common
+DIS089,Depression,Sadness; Insomnia; Loss of interest; Fatigue,Psychiatrist,Mental Health,Therapy; Medication; Lifestyle changes,Fluoxetine; Sertraline; Escitalopram,Moderate,Psychiatric,30,90,Very Common
+DIS090,Anxiety Disorder,Nervousness; Fear; Palpitations; Sweating,Psychiatrist,Mental Health,Cognitive behavioral therapy; Medication,Alprazolam; Sertraline; Buspirone,Moderate,Psychiatric,30,90,Very Common
+DIS091,Bipolar Disorder,Mood swings; Mania; Depression episodes,Psychiatrist,Mental Health,Mood stabilizers; Therapy; Routine,Lithium; Valproate; Quetiapine,Severe,Psychiatric,90,365,Less Common
+DIS092,Insomnia,Difficulty sleeping; Night waking; Fatigue,Psychiatrist,Mental Health,Sleep hygiene; CBT; Short-term medication,Zolpidem; Melatonin; Diazepam,Mild,Lifestyle/Psychiatric,7,30,Very Common
+DIS093,OCD,Obsessive thoughts; Compulsive rituals; Anxiety,Psychiatrist,Mental Health,CBT; ERP therapy; Medication,Fluoxetine; Fluvoxamine; Clomipramine,Moderate,Psychiatric,90,365,Less Common
+DIS094,PTSD,Flashbacks; Nightmares; Hypervigilance,Psychiatrist,Mental Health,Trauma therapy; Medication; Support groups,Sertraline; Prazosin; Venlafaxine,Severe,Psychiatric,90,180,Less Common
+DIS095,Schizophrenia,Hallucinations; Delusions; Disorganized thinking,Psychiatrist,Mental Health,Antipsychotics; Therapy; Rehabilitation,Risperidone; Olanzapine; Clozapine,Severe,Psychiatric,90,365,Less Common
+DIS096,ADHD,Inattention; Hyperactivity; Impulsivity,Psychiatrist,Mental Health,Behavioral therapy; Medication; Routine,Methylphenidate; Atomoxetine; Amphetamine,Moderate,Chronic,90,365,Common
+DIS097,Eating Disorder (Anorexia),Extreme low weight; Distorted body image; Fatigue,Psychiatrist,Mental Health,Nutritional rehab; Therapy; Medication,Olanzapine; Fluoxetine; Multivitamins,Severe,Psychiatric,90,365,Less Common
+DIS098,Panic Disorder,Sudden intense fear; Chest pain; Shortness of breath,Psychiatrist,Mental Health,CBT; Relaxation techniques; Medication,Alprazolam; Escitalopram; Clonazepam,Moderate,Psychiatric,30,90,Common
+DIS099,Dengue Fever,High fever; Joint pain; Rash; Bleeding tendency,General Physician,Infectious,Hydration; Platelet monitoring; Rest,Paracetamol; ORS; Platelet support,Severe,Viral,7,14,Common
+DIS100,Malaria,Fever; Chills; Sweating; Anemia,General Physician,Infectious,Antimalarial drugs; Hospitalization,Chloroquine; Artemether; Lumefantrine,Severe,Parasitic,7,21,Common
+DIS101,Typhoid,Sustained fever; Abdominal pain; Rash,General Physician,Infectious,Antibiotics; Rest; Fluids,Ciprofloxacin; Ceftriaxone; Azithromycin,Moderate,Bacterial,14,30,Common
+DIS102,Measles,Fever; Rash; Cough; Red eyes,General Physician,Infectious,Vitamin A therapy; Supportive care,Vitamin A; Paracetamol; Antihistamine,Moderate,Viral,7,14,Less Common
+DIS103,Mumps,Swollen salivary glands; Fever; Headache,General Physician,Infectious,Rest; Pain relief; Fluids,Ibuprofen; Paracetamol; Hydration,Mild,Viral,7,14,Less Common
+DIS104,Rabies,Bite wound; Hydrophobia; Paralysis,General Physician,Infectious,Vaccine therapy; Wound cleaning; Immunoglobulin,Rabies vaccine; Immunoglobulin; Antibiotics,Critical,Viral,14,90,Less Common
+DIS105,Cholera,Profuse watery diarrhea; Dehydration; Vomiting,General Physician,Infectious,Oral rehydration; IV fluids; Antibiotics,ORS; Doxycycline; Zinc,Critical,Bacterial,3,7,Less Common
+DIS106,Tetanus,Muscle stiffness; Spasms; Lockjaw,General Physician,Infectious,Tetanus immunoglobulin; Antibiotics; ICU care,Metronidazole; Diazepam; Tetanus toxoid,Critical,Bacterial,14,60,Less Common
+DIS107,Leprosy,Skin lesions; Nerve damage; Muscle weakness,Dermatologist,Infectious,Multi-drug therapy (MDT); Rehabilitation,Dapsone; Rifampicin; Clofazimine,Severe,Bacterial,180,365,Rare
+DIS108,HIV/AIDS,Weight loss; Opportunistic infections; Fatigue,Infectious Disease Specialist,Infectious,Antiretroviral therapy (ART); Supportive care,Tenofovir; Emtricitabine; Efavirenz,Severe,Viral,90,365,Moderate
+DIS109,Anemia (Iron Deficiency),Fatigue; Weakness; Pale skin; Dizziness,Hematologist,Hematological,Iron supplements; Dietary changes,Ferrous sulfate; Folic acid; Vitamin B12,Mild,Nutritional,30,60,Very Common
+DIS110,Sickle Cell Anemia,Pain crises; Anemia; Swollen hands; Jaundice,Hematologist,Hematological,Hydration; Pain management; Hydroxyurea,Hydroxyurea; Folic acid; Analgesics,Severe,Genetic,30,90,Moderate
+DIS111,Leukemia (CML),Fatigue; Night sweats; Splenomegaly; Bleeding,Hematologist,Hematological,Tyrosine kinase inhibitors; Stem cell transplant,Imatinib; Nilotinib; Dasatinib,Critical,Cancer,90,365,Less Common
+DIS112,Hemophilia,Prolonged bleeding; Joint bleeds; Bruising,Hematologist,Hematological,Factor replacement therapy; Avoid injury,Factor VIII; Desmopressin; Tranexamic acid,Severe,Genetic,1,3,Rare
+DIS113,Thrombocytopenia,Low platelets; Easy bruising; Bleeding gums,Hematologist,Hematological,Steroids; Platelet transfusion; Treat cause,Prednisolone; IV Immunoglobulin; Eltrombopag,Severe,Autoimmune,14,30,Less Common
+DIS114,PCOS,Irregular periods; Acne; Weight gain; Hair growth,Gynecologist,Reproductive,Hormonal therapy; Diet; Exercise,Metformin; Oral contraceptives; Spironolactone,Moderate,Hormonal,30,90,Common
+DIS115,Endometriosis,Pelvic pain; Heavy periods; Infertility,Gynecologist,Reproductive,Hormonal therapy; Laparoscopic surgery,GnRH agonists; NSAIDs; Oral contraceptives,Severe,Chronic,30,90,Common
+DIS116,Menstrual Disorders,Irregular/heavy periods; Pain; Fatigue,Gynecologist,Reproductive,Hormonal therapy; Iron supplements; NSAIDs,Norethisterone; Tranexamic acid; Ibuprofen,Mild,Hormonal,7,30,Very Common
+DIS117,Erectile Dysfunction,Inability to maintain erection; Reduced libido,Urologist,Reproductive,Medication; Therapy; Lifestyle changes,Sildenafil; Tadalafil; Vardenafil,Mild,Vascular/Psychological,30,90,Common
+DIS118,Prostatitis,Pelvic pain; Urinary difficulties; Fever,Urologist,Reproductive,Antibiotics; Anti-inflammatories; Rest,Ciprofloxacin; Doxazosin; Ibuprofen,Moderate,Bacterial/Inflammatory,14,42,Common
+DIS119,Breast Cancer,Breast lump; Skin changes; Nipple discharge,Oncologist,Cancer,Surgery; Chemotherapy; Radiation; Hormonal therapy,Tamoxifen; Anastrozole; Paclitaxel,Severe,Cancer,90,365,Moderate
+DIS120,Lung Cancer,Persistent cough; Hemoptysis; Weight loss,Oncologist,Cancer,Surgery; Chemotherapy; Targeted therapy,Erlotinib; Cisplatin; Paclitaxel,Critical,Cancer,90,365,Moderate
+DIS121,Colorectal Cancer,Rectal bleeding; Change in bowel habits; Weight loss,Oncologist,Cancer,Surgery; Chemotherapy; Radiotherapy,Oxaliplatin; Fluorouracil; Bevacizumab,Critical,Cancer,90,365,Moderate
+DIS122,Cervical Cancer,Abnormal vaginal bleeding; Pelvic pain; Discharge,Gynecologist,Cancer,Surgery; Radiation; Chemotherapy; HPV vaccine,Cisplatin; Paclitaxel; Bevacizumab,Critical,Cancer,90,365,Moderate
+DIS123,Thyroid Cancer,Neck lump; Hoarse voice; Difficulty swallowing,Oncologist,Cancer,Thyroidectomy; Radioiodine; Levothyroxine,Levothyroxine; Sorafenib; Radioiodine,Severe,Cancer,90,180,Less Common
+DIS124,Malnutrition,Low weight; Stunted growth; Weakness; Edema,Pediatrician,General,Nutritional rehabilitation; Micronutrients,Vitamin A; Zinc; Therapeutic food,Severe,Nutritional,30,90,Common
+DIS125,Dehydration,Low fluids; Dry mouth; Dizziness; Dark urine,General Physician,General,Oral/IV fluid intake; Electrolyte replacement,ORS; Electrolytes; Water,Moderate,Acute,1,3,Very Common
+DIS126,Heat Stroke,High body temperature; Confusion; Hot dry skin,General Physician,General,Cooling therapy; IV fluids; Monitoring,Paracetamol; IV Fluids; Electrolytes,Critical,Environmental,1,3,Less Common
+DIS127,Motion Sickness,Nausea; Vomiting; Dizziness; Cold sweat,General Physician,General,Anti-motion medication; Accupressure; Ginger,Dimenhydrinate; Meclizine; Ondansetron,Mild,Neurological,1,2,Common
+DIS128,Burn Injury,Skin damage; Redness; Pain; Blisters,General Physician,General,Wound care; Cooling; Antibiotics; Skin grafting,Silver sulfadiazine; Analgesics; Antibiotics,Moderate,Traumatic,14,42,Common
+DIS129,Hernia,Bulge; Pain; Discomfort on lifting,General Surgeon,General,Surgical repair (hernioplasty),No medicine (surgical),Moderate,Structural,7,14,Common
+DIS130,Vitamin D Deficiency,Bone pain; Muscle weakness; Fatigue; Mood changes,General Physician,General,Vitamin D supplements; Sun exposure; Dietary changes,Vitamin D3; Calcium; Magnesium,Mild,Nutritional,30,90,Very Common
+DIS131,Vitamin B12 Deficiency,Fatigue; Numbness; Memory problems; Anemia,General Physician,General,B12 injections; Oral supplements,Cyanocobalamin; Methylcobalamin; Folic acid,Mild,Nutritional,30,90,Common
+DIS132,Whooping Cough (Pertussis),Severe cough fits; Whooping sound; Vomiting,General Physician,Respiratory,Antibiotics; Supportive care,Azithromycin; Clarithromycin; Erythromycin,Moderate,Bacterial,21,42,Less Common
+DIS133,Pulmonary Embolism,Sudden breathlessness; Chest pain; Cough with blood,Pulmonologist,Respiratory,Anticoagulants; Thrombolysis; O2 therapy,Heparin; Warfarin; Rivaroxaban,Critical,Acute,14,42,Less Common
+DIS134,Sleep Apnea,Loud snoring; Gasping; Daytime fatigue,Pulmonologist,Respiratory,CPAP therapy; Weight loss; Surgery,CPAP; Modafinil; Oxybutynin,Moderate,Chronic,30,90,Common
+DIS135,Pericarditis,Chest pain; Fever; Sharp stabbing heart pain,Cardiologist,Cardiovascular,Anti-inflammatory drugs; Colchicine; Rest,Ibuprofen; Colchicine; Aspirin,Moderate,Inflammatory,14,42,Less Common
+DIS136,Endocarditis,Fever; Heart murmur; Joint pain; Fatigue,Cardiologist,Cardiovascular,IV Antibiotics; Surgery if severe,Benzylpenicillin; Gentamicin; Vancomycin,Severe,Bacterial,42,90,Less Common
+DIS137,Hyperlipidemia,Usually asymptomatic; High cholesterol; Risk of CVD,Cardiologist,Cardiovascular,Statins; Diet; Exercise,Atorvastatin; Rosuvastatin; Ezetimibe,Mild,Metabolic,30,90,Very Common
+DIS138,Polycythemia Vera,Headache; Dizziness; Itching; Red skin,Hematologist,Hematological,Phlebotomy; Aspirin; Hydroxyurea,Hydroxyurea; Aspirin; Ruxolitinib,Severe,Cancer,90,365,Rare
+DIS139,Dengue Hemorrhagic Fever,High fever; Severe bleeding; Organ failure,General Physician,Infectious,Intensive supportive care; Platelet transfusion,IV Fluids; Platelet support; Paracetamol,Critical,Viral,7,21,Less Common
+DIS140,Leptospirosis,Fever; Muscle pain; Jaundice; Red eyes,General Physician,Infectious,Antibiotics; IV fluids; Monitoring,Penicillin; Doxycycline; Ceftriaxone,Moderate,Bacterial,7,21,Less Common
+DIS141,Scabies,Intense itching; Burrow marks; Rash between fingers,Dermatologist,Dermatological,Permethrin cream; Oral ivermectin; Antihistamines,Permethrin; Ivermectin; Cetirizine,Mild,Parasitic,7,14,Common
+DIS142,Vitiligo,White patches on skin; Loss of skin pigment,Dermatologist,Dermatological,Topical corticosteroids; Phototherapy; Depigmentation,Tacrolimus; Psoralen; Betamethasone,Mild,Autoimmune,90,365,Common
+DIS143,Cellulitis,Red swollen skin; Warmth; Fever; Tenderness,Dermatologist,Dermatological,Antibiotics; Elevation; Wound care,Amoxicillin; Flucloxacillin; Clindamycin,Moderate,Bacterial,7,14,Common
+DIS144,Renal Failure (Acute),Decreased urine; Swelling; Confusion; Fatigue,Nephrologist,Renal,Dialysis; IV fluids; Treat cause,Furosemide; Calcium gluconate; Sodium bicarbonate,Critical,Acute,7,30,Less Common
+DIS145,Lupus (SLE),Butterfly rash; Joint pain; Fatigue; Fever,Rheumatologist,Autoimmune,Immunosuppressants; Antimalarials; Steroids,Hydroxychloroquine; Prednisolone; Azathioprine,Severe,Autoimmune,90,365,Less Common
+DIS146,Sjogren's Syndrome,Dry eyes; Dry mouth; Fatigue; Joint pain,Rheumatologist,Autoimmune,Symptomatic relief; Immunosuppressants,Pilocarpine; Hydroxychloroquine; Prednisolone,Moderate,Autoimmune,30,90,Less Common
+DIS147,Vasculitis,Skin rash; Fever; Fatigue; Organ involvement,Rheumatologist,Autoimmune,Corticosteroids; Immunosuppressants,Prednisolone; Cyclophosphamide; Azathioprine,Severe,Autoimmune,30,90,Less Common
+DIS148,Macular Degeneration,Central vision loss; Blurred vision; Distortion,Ophthalmologist,Ophthalmic,Anti-VEGF injections; Laser therapy; Supplements,Ranibizumab; Aflibercept; Zinc supplements,Severe,Age-related,30,90,Common
+DIS149,Amblyopia (Lazy Eye),Reduced vision in one eye; Poor depth perception,Ophthalmologist,Ophthalmic,Eye patching; Glasses; Vision therapy,Atropine drops; Corrective lenses; Patching,Mild,Neurological,30,180,Common
+DIS150,Gall Bladder Disease,Upper right abdominal pain; Nausea; Bloating after fatty food,Gastroenterologist,Digestive,Dietary changes; Surgery; Medication,Ursodiol; Analgesics; Antispasmodics,Moderate,Structural,7,30,Common
+DIS151,Hemorrhoids,Rectal bleeding; Pain; Itching; Prolapse,Gastroenterologist,Digestive,High-fiber diet; Sitz baths; Surgery,Hydrocortisone cream; Lactulose; Analgesics,Mild,Structural,7,21,Very Common
+DIS152,Diverticulitis,Left lower abdominal pain; Fever; Nausea; Change in bowel,Gastroenterologist,Digestive,Antibiotics; Rest; High-fiber diet; Surgery,Metronidazole; Ciprofloxacin; Analgesics,Moderate,Inflammatory,7,21,Common
+DIS153,Autism Spectrum Disorder,Social difficulties; Repetitive behavior; Communication challenges,Psychiatrist,Mental Health,Behavioral therapy; Speech therapy; Social skills training,Risperidone; Aripiprazole; Melatonin,Moderate,Neurodevelopmental,90,365,Less Common
+DIS154,Dyslexia,Reading difficulty; Letter reversal; Slow reading,Psychiatrist,Mental Health,Special education; Reading therapy; Assistive technology,No medicine; Reading aids; Behavioral support,Mild,Neurodevelopmental,90,365,Common
+DIS155,Agoraphobia,Fear of open spaces; Panic; Avoidance behavior,Psychiatrist,Mental Health,CBT; Exposure therapy; Medication,Sertraline; Alprazolam; Clonazepam,Moderate,Psychiatric,30,90,Less Common

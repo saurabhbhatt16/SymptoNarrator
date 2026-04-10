@@ -1,0 +1,78 @@
+# ======================
+# PYTHON VIRTUAL ENVIRONMENT
+# ======================
+.venv/
+env/
+venv/
+ENV/
+.env
+.env.local
+.env.*.local
+
+# ======================
+# PYTHON CACHE & COMPILED FILES
+# ======================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ======================
+# TESTING & COVERAGE
+# ======================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ======================
+# IDE & EDITOR
+# ======================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.fleet/
+*.sublime-project
+*.sublime-workspace
+
+# ======================
+# OS
+# ======================
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+
+# ======================
+# LOGS
+# ======================
+*.log
+logs/
+
+# ======================
+# DATABASE & TEMP
+# ======================
+*.db
+*.sqlite
+temp/
+*.tmp
+
+# ======================
+# PIP & DEPENDENCIES
+# ======================
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ======================
+# MODEL FILES (Optional - if storing ML models in repo)
+# ======================
+# *.pkl
+# *.joblib
+# models/downloads/

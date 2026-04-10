@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AppointmentType {
+  physical
+  online
+}
+
+enum ChatStatus {
+  none
+  requested
+  accepted
+}
+
+model User {
+  id                  Int             @id @default(autoincrement())
+  name                String
+  email               String          @unique
+  password            String
+  role                Role            @default(patient)
+  isVerified          Boolean         @default(false)
+  patientProfile      PatientProfile?
+  doctorProfile       DoctorProfile?
+  patientAppointments Appointment[]   @relation("PatientAppointments")
+  reports             Report[]        @relation("PatientReports")
+  sentMessages        Message[]       @relation("SentMessages")
+  receivedMessages    Message[]       @relation("ReceivedMessages")
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+}
+
+model PatientProfile {
+  id             Int      @id @default(autoincrement())
+  userId         Int      @unique
+  fullName       String
+  age            Int
+  gender         String
+  phone          String?
+  bloodGroup     String
+  symptoms       String
+  medicalHistory String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model DoctorProfile {
+  id                 Int           @id @default(autoincrement())
+  userId             Int           @unique
+  fullName           String
+  age                Int?
+  gender             String?
+  specialization     String
+  education          String?
+  phone              String?
+  experience         Int
+  hospitalName       String?
+  availableTimings   String?
+  consultationFee    Float?
+  profileImage       String?
+  weeklyAvailability Json?
+  isVerified         Boolean       @default(false)
+  verified           Boolean       @default(false)
+  appointments       Appointment[] @relation("DoctorAppointments")
+  timetables         Timetable[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Timetable {
+  id          Int      @id @default(autoincrement())
+  doctorId    Int
+  day         String
+  timeSlot    String
+  isAvailable Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  doctor DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@unique([doctorId, day, timeSlot])
+  @@index([doctorId])
+}
+
+model Appointment {
+  id              Int               @id @default(autoincrement())
+  patientId       Int
+  doctorId        Int
+  date            DateTime
+  time            String
+  status          AppointmentStatus @default(pending)
+  appointmentType AppointmentType   @default(physical)
+  chatStatus      ChatStatus        @default(none)
+  chatRequestedAt DateTime?
+  chatAcceptedAt  DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  patient  User          @relation("PatientAppointments", fields: [patientId], references: [id], onDelete: Cascade)
+  doctor   DoctorProfile @relation("DoctorAppointments", fields: [doctorId], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@unique([doctorId, date, time])
+}
+
+model Message {
+  id            Int      @id @default(autoincrement())
+  senderId      Int
+  receiverId    Int
+  appointmentId Int
+  message       String
+  createdAt     DateTime @default(now())
+
+  sender      User        @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    User        @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+}
+
+model Report {
+  id          Int      @id @default(autoincrement())
+  patientId   Int
+  reportData  Json
+  summary     String?
+  generatedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  patient User @relation("PatientReports", fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@index([patientId])
+  @@index([generatedAt])
+}
+
+enum Role {
+  patient
+  doctor
+  admin
+}
+
+enum AppointmentStatus {
+  pending
+  accepted
+  rejected
+  completed
+}
