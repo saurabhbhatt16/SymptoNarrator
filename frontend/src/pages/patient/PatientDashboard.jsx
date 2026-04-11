@@ -746,13 +746,25 @@ function PatientDashboard() {
   }
 
   const handleSaveProfile = async (form) => {
+    if (!profile) {
+      toast.error('Profile is not ready yet')
+      return
+    }
+
+    const parsedAge = Number.parseInt(String(form.age ?? '').trim(), 10)
+    if (!Number.isFinite(parsedAge) || parsedAge < 0) {
+      toast.error('Please enter a valid age')
+      return
+    }
+
     setSavingProfile(true)
     try {
       const response = await updatePatientProfileApi({
-        name: form.name,
-        age: Number(form.age),
-        gender: form.gender,
-        phone: form.phone,
+        name: String(form.name || profile.fullName || profile.name || user?.name || '').trim(),
+        age: parsedAge,
+        gender: String(form.gender || profile.gender || '').trim(),
+        phone: String(form.phone || '').trim(),
+        profileImage: form.profileImage,
         symptoms: profile?.symptoms || answers.symptoms || 'Not specified',
         medicalHistory: profile?.medicalHistory || answers.previousIllness || '',
       })
@@ -760,8 +772,10 @@ function PatientDashboard() {
       setProfile(response)
       setEditOpen(false)
       toast.success('Profile updated successfully')
-    } catch (_error) {
-      toast.error('Unable to update profile')
+    } catch (error) {
+      const detail = error?.response?.data?.details
+      const detailMessage = Array.isArray(detail) && detail.length > 0 ? detail[0] : null
+      toast.error(detailMessage || error?.response?.data?.message || error?.message || 'Unable to update profile')
     } finally {
       setSavingProfile(false)
     }
@@ -813,7 +827,11 @@ function PatientDashboard() {
 
         <section className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-[300px_minmax(0,1fr)_280px] lg:grid-cols-2">
           <div>
-            <ProfileCard profile={profile} onEdit={() => setEditOpen(true)} />
+            <ProfileCard
+              profile={profile}
+              onPhotoEdit={() => setEditOpen(true)}
+              onEdit={() => setEditOpen(true)}
+            />
           </div>
 
           <div className="space-y-6">

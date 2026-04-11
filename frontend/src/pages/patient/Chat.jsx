@@ -13,7 +13,7 @@ function Chat() {
   const numericAppointmentId = Number(appointmentId)
   const { user } = useSelector((state) => state.auth)
   const navigate = useNavigate()
-  const token = localStorage.getItem('token')
+  const token = sessionStorage.getItem('token') || localStorage.getItem('token')
 
   const [messages, setMessages] = useState([])
   const [text, setText] = useState('')

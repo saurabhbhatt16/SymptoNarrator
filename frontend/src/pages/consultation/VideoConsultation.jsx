@@ -57,7 +57,7 @@ function VideoConsultation() {
   const isValidAppointmentId = Number.isInteger(numericAppointmentId) && numericAppointmentId > 0
   const { user } = useSelector((state) => state.auth)
   const navigate = useNavigate()
-  const token = localStorage.getItem('token')
+  const token = sessionStorage.getItem('token') || localStorage.getItem('token')
   const role = user?.role
 
   const [appointment, setAppointment] = useState(null)

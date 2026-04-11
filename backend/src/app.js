@@ -12,9 +12,10 @@ const aiRoutes = require("../routes/ai.routes");
 const errorMiddleware = require("../middlewares/error.middleware");
 
 const app = express();
+const jsonBodyLimit = process.env.JSON_BODY_LIMIT || '10mb';
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: jsonBodyLimit }));
 app.use(morgan("dev"));
 
 app.use("/api/auth", authRoutes);

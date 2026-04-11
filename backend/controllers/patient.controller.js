@@ -12,10 +12,11 @@ const patientSchema = Joi.object({
 })
 
 const updatePatientSchema = Joi.object({
-  name: Joi.string().trim().min(2).max(120).required(),
-  age: Joi.number().integer().min(0).max(130).required(),
-  gender: Joi.string().trim().min(2).max(30).required(),
-  phone: Joi.string().trim().min(7).max(20).allow('', null).optional(),
+  name: Joi.string().trim().min(1).max(120).allow('', null).optional(),
+  age: Joi.number().integer().min(0).max(130).optional(),
+  gender: Joi.string().trim().min(1).max(30).allow('', null).optional(),
+  phone: Joi.string().trim().max(30).allow('', null).optional(),
+  profileImage: Joi.string().allow('', null).optional(),
   symptoms: Joi.string().trim().min(2).allow('', null).optional(),
   medicalHistory: Joi.string().allow('', null).optional(),
 })
@@ -28,6 +29,7 @@ function toFlatProfile(profile) {
     gender: profile.gender,
     email: profile.user?.email || '',
     phone: profile.phone || '',
+      profileImage: profile.profileImage || '',
     bloodGroup: profile.bloodGroup || '',
     symptoms: profile.symptoms || '',
     medicalHistory: profile.medicalHistory || '',
@@ -90,7 +92,11 @@ async function updateProfileFlat(req, res, next) {
       return res.status(403).json({ message: 'Only patients can update this profile' })
     }
 
-    const { error, value } = updatePatientSchema.validate(req.body, { abortEarly: false })
+    const { error, value } = updatePatientSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: true,
+      stripUnknown: true,
+    })
     if (error) {
       return res.status(400).json({
         message: 'Validation failed',
@@ -111,7 +117,11 @@ async function updateMyProfile(req, res, next) {
       return res.status(403).json({ message: 'Only patients can update this profile' })
     }
 
-    const { error, value } = updatePatientSchema.validate(req.body, { abortEarly: false })
+    const { error, value } = updatePatientSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: true,
+      stripUnknown: true,
+    })
     if (error) {
       return res.status(400).json({
         message: 'Validation failed',

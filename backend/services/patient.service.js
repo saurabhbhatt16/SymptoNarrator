@@ -15,6 +15,7 @@ async function createPatientProfile(userId, payload) {
       age: payload.age,
       gender: payload.gender,
       phone: payload.phone || null,
+      profileImage: payload.profileImage || null,
       bloodGroup: payload.bloodGroup,
       symptoms: payload.symptoms,
       medicalHistory: payload.medicalHistory || null,
@@ -33,6 +34,7 @@ async function getPatientProfile(userId) {
       age: true,
       gender: true,
       phone: true,
+      profileImage: true,
       bloodGroup: true,
       symptoms: true,
       medicalHistory: true,
@@ -65,22 +67,33 @@ async function updatePatientProfile(userId, payload) {
     throw error
   }
 
-  if (payload.name) {
+  const nextName = payload.name && String(payload.name).trim() ? String(payload.name).trim() : existing.fullName
+  const hasNameChange = Boolean(nextName) && nextName !== existing.fullName
+
+  if (hasNameChange) {
     await prisma.user.update({
       where: { id: userId },
-      data: { name: payload.name },
+      data: { name: nextName },
     })
   }
+
+  const nextAge = Number.isInteger(payload.age) ? payload.age : existing.age
+  const nextGender = payload.gender && String(payload.gender).trim() ? String(payload.gender).trim() : existing.gender
+  const nextPhone = payload.phone == null ? existing.phone : payload.phone || null
+  const nextSymptoms = payload.symptoms == null ? existing.symptoms : payload.symptoms || existing.symptoms
+  const nextMedicalHistory = payload.medicalHistory == null ? existing.medicalHistory : payload.medicalHistory || null
+  const nextProfileImage = payload.profileImage == null ? existing.profileImage : payload.profileImage || null
 
   const profile = await prisma.patientProfile.update({
     where: { userId },
     data: {
-      fullName: payload.name,
-      age: payload.age,
-      gender: payload.gender,
-      phone: payload.phone || null,
-      symptoms: payload.symptoms || existing.symptoms,
-      medicalHistory: payload.medicalHistory || existing.medicalHistory,
+      fullName: nextName,
+      age: nextAge,
+      gender: nextGender,
+      phone: nextPhone,
+      profileImage: nextProfileImage,
+      symptoms: nextSymptoms,
+      medicalHistory: nextMedicalHistory,
       bloodGroup: existing.bloodGroup,
     },
     select: {
@@ -89,6 +102,7 @@ async function updatePatientProfile(userId, payload) {
       age: true,
       gender: true,
       phone: true,
+      profileImage: true,
       bloodGroup: true,
       symptoms: true,
       medicalHistory: true,

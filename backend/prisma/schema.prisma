@@ -47,6 +47,7 @@ model PatientProfile {
   age            Int
   gender         String
   phone          String?
+  profileImage   String?
   bloodGroup     String
   symptoms       String
   medicalHistory String?

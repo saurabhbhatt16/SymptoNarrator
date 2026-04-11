@@ -1,22 +1,29 @@
 import { FiCamera, FiUser } from 'react-icons/fi'
 
-function ProfileCard({ profile, onEdit }) {
+function ProfileCard({ profile, onPhotoEdit, onEdit }) {
   const fullName = profile?.fullName || profile?.name || profile?.user?.name || '...'
   const phone = profile?.phone || '--'
   const initial = profile?.user?.name?.charAt(0) || fullName.charAt(0).toUpperCase() || 'P'
+  const avatarImage = profile?.profileImage || ''
 
   return (
     <section className="mx-auto w-full max-w-md rounded-xl bg-white p-5 shadow-md">
       <div className="flex flex-col items-center text-center">
         <div className="relative">
-          <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-cyan-600 text-3xl font-semibold text-white shadow-md">
-            {initial ? <span>{initial}</span> : <FiUser size={30} />}
+          <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-sky-500 to-cyan-600 text-3xl font-semibold text-white shadow-md">
+            {avatarImage ? (
+              <img src={avatarImage} alt={fullName} className="h-full w-full object-cover" />
+            ) : initial ? (
+              <span>{initial}</span>
+            ) : (
+              <FiUser size={30} />
+            )}
           </div>
           <button
             type="button"
-            onClick={onEdit}
-            className="absolute bottom-1 right-1 rounded-full bg-white p-2 shadow"
-            aria-label="Edit patient profile"
+            onClick={onPhotoEdit}
+            className="absolute bottom-1 right-1 rounded-full bg-white p-2 shadow transition hover:bg-slate-50"
+            aria-label="Change profile photo"
           >
             <FiCamera className="text-slate-700" size={14} />
           </button>
@@ -53,7 +60,7 @@ function InfoRow({ label, value }) {
     <div className="min-w-0 rounded-lg bg-slate-50 px-3 py-2">
       <div className="flex items-start justify-between gap-4 text-sm">
         <div className="min-w-0 shrink-0 font-medium text-slate-900">{label}:</div>
-        <div className="min-w-0 max-w-full break-words text-right text-slate-800">{value}</div>
+        <div className="min-w-0 max-w-full wrap-break-word text-right text-slate-800">{value}</div>
       </div>
     </div>
   )

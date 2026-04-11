@@ -1,7 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const persistedToken = localStorage.getItem('token')
-const persistedUser = localStorage.getItem('user')
+const persistedToken = sessionStorage.getItem('token') || localStorage.getItem('token')
+const persistedUser = sessionStorage.getItem('user') || localStorage.getItem('user')
+
+if (persistedToken && !sessionStorage.getItem('token')) {
+  sessionStorage.setItem('token', persistedToken)
+}
+
+if (persistedUser && !sessionStorage.getItem('user')) {
+  sessionStorage.setItem('user', persistedUser)
+}
+
+localStorage.removeItem('token')
+localStorage.removeItem('user')
 
 const initialState = {
   user: persistedUser ? JSON.parse(persistedUser) : null,
@@ -21,10 +32,10 @@ const authSlice = createSlice({
       state.token = token
       state.isAuthenticated = true
       if (token) {
-        localStorage.setItem('token', token)
+        sessionStorage.setItem('token', token)
       }
       if (user) {
-        localStorage.setItem('user', JSON.stringify(user))
+        sessionStorage.setItem('user', JSON.stringify(user))
       }
     },
     logout(state) {
@@ -32,6 +43,8 @@ const authSlice = createSlice({
       state.role = null
       state.token = null
       state.isAuthenticated = false
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('user')
       localStorage.removeItem('token')
       localStorage.removeItem('user')
     },

@@ -11,6 +11,7 @@ function normalizePatientProfile(payload = {}) {
     ...payload,
     fullName: payload.fullName || name,
     name,
+    profileImage: payload.profileImage || payload.user?.profileImage || '',
     user: payload.user || {
       name,
       email: payload.email || '',
