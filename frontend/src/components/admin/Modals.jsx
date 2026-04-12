@@ -1,6 +1,7 @@
+import { memo } from 'react'
 import { FiX, FiTrash2 } from 'react-icons/fi'
 
-function UserList({ users, onDelete, actionLoadingId }) {
+const UserList = memo(function UserList({ users, onDelete, actionLoadingId }) {
   if (!users.length) {
     return <p className="text-sm text-slate-500">No data available</p>
   }
@@ -25,9 +26,9 @@ function UserList({ users, onDelete, actionLoadingId }) {
       ))}
     </div>
   )
-}
+})
 
-function DoctorList({ doctors, onDelete, actionLoadingId }) {
+const DoctorList = memo(function DoctorList({ doctors, onDelete, actionLoadingId }) {
   if (!doctors.length) {
     return <p className="text-sm text-slate-500">No data available</p>
   }
@@ -52,9 +53,9 @@ function DoctorList({ doctors, onDelete, actionLoadingId }) {
       ))}
     </div>
   )
-}
+})
 
-function PendingDoctorList({ doctors, onVerify, onReject, actionLoadingId }) {
+const PendingDoctorList = memo(function PendingDoctorList({ doctors, onVerify, onReject, actionLoadingId }) {
   if (!doctors.length) {
     return <p className="text-sm text-slate-500">No data available</p>
   }
@@ -96,9 +97,9 @@ function PendingDoctorList({ doctors, onVerify, onReject, actionLoadingId }) {
       ))}
     </div>
   )
-}
+})
 
-function AppointmentList({ appointments }) {
+const AppointmentList = memo(function AppointmentList({ appointments }) {
   if (!appointments.length) {
     return <p className="text-sm text-slate-500">No data available</p>
   }
@@ -113,7 +114,7 @@ function AppointmentList({ appointments }) {
       ))}
     </div>
   )
-}
+})
 
 function Modals({ openType, onClose, patients, doctors, pendingDoctors, appointments, onVerifyDoctor, onRejectDoctor, onDeleteUser, onDeleteDoctor, actionLoadingId }) {
   if (!openType) {
@@ -156,4 +157,4 @@ function Modals({ openType, onClose, patients, doctors, pendingDoctors, appointm
   )
 }
 
-export default Modals
+export default memo(Modals)

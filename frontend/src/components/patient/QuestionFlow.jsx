@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { FiMic, FiMicOff } from 'react-icons/fi'
 
 function sanitizeSymptomToken(value) {
@@ -36,6 +36,19 @@ function ensureSymptomInText(text, symptom) {
   return [...parts, symptom].join(', ')
 }
 
+function parseSymptomsFromSpeech(transcript) {
+  const splitPattern = /,|;|\band\b|\bplus\b|\balso\b|\n/gi
+
+  return String(transcript || '')
+    .split(splitPattern)
+    .map((item) =>
+      item
+        .trim()
+        .replace(/^(i\s+have|i\s+am\s+having|having|with|feeling|suffering\s+from)\s+/i, ''),
+    )
+    .filter(Boolean)
+}
+
 function QuestionFlow({
   answers,
   onChange,
@@ -46,11 +59,29 @@ function QuestionFlow({
 }) {
   const [isRecording, setIsRecording] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [speechError, setSpeechError] = useState('')
   const recognitionRef = useRef(null)
+  const symptomsValueRef = useRef(answers.symptoms)
+  const silenceTimeoutRef = useRef(null)
+  const interimTranscriptRef = useRef('')
+  const isStartingRef = useRef(false)
+
+  useEffect(() => {
+    symptomsValueRef.current = answers.symptoms
+  }, [answers.symptoms])
 
   const speechSupported = useMemo(() => {
     if (typeof window === 'undefined') return false
     return Boolean(window.SpeechRecognition || window.webkitSpeechRecognition)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (silenceTimeoutRef.current) {
+        window.clearTimeout(silenceTimeoutRef.current)
+      }
+      recognitionRef.current?.stop()
+    }
   }, [])
 
   const suggestions = useMemo(() => {
@@ -77,27 +108,124 @@ function QuestionFlow({
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognition) return
 
+    setSpeechError('')
+
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition()
       recognition.lang = 'en-US'
-      recognition.continuous = false
-      recognition.interimResults = false
-      recognition.onstart = () => setIsRecording(true)
-      recognition.onend = () => setIsRecording(false)
-      recognition.onresult = (event) => {
-        const transcript = event.results?.[0]?.[0]?.transcript || ''
-        if (transcript) {
-          onChange('symptoms', `${answers.symptoms ? `${answers.symptoms} ` : ''}${transcript}`.trim())
+      recognition.continuous = true
+      recognition.interimResults = true
+      recognition.maxAlternatives = 1
+      recognition.onstart = () => {
+        isStartingRef.current = false
+        setIsRecording(true)
+      }
+      recognition.onend = () => {
+        isStartingRef.current = false
+        if (silenceTimeoutRef.current) {
+          window.clearTimeout(silenceTimeoutRef.current)
+        }
+
+        // Some browsers may emit interim-only text for a while. Commit it on end.
+        if (interimTranscriptRef.current) {
+          const spokenSymptoms = parseSymptomsFromSpeech(interimTranscriptRef.current)
+          const nextText = spokenSymptoms.reduce(
+            (current, symptom) => ensureSymptomInText(current, symptom),
+            symptomsValueRef.current,
+          )
+
+          onChange('symptoms', nextText)
+          symptomsValueRef.current = nextText
+          interimTranscriptRef.current = ''
           setShowSuggestions(false)
         }
+
+        setIsRecording(false)
+      }
+      recognition.onerror = (event) => {
+        isStartingRef.current = false
+        if (silenceTimeoutRef.current) {
+          window.clearTimeout(silenceTimeoutRef.current)
+        }
+        setIsRecording(false)
+
+        if (event?.error === 'not-allowed' || event?.error === 'service-not-allowed') {
+          setSpeechError('Microphone permission is blocked. Please allow mic access in your browser.')
+          return
+        }
+
+        if (event?.error === 'no-speech') {
+          setSpeechError('No speech detected. Try speaking a little closer to the microphone.')
+          return
+        }
+
+        if (event?.error === 'audio-capture') {
+          setSpeechError('No microphone was found. Check your audio input device and try again.')
+          return
+        }
+
+        setSpeechError('Voice input failed. Please try again.')
+      }
+      recognition.onresult = (event) => {
+        if (silenceTimeoutRef.current) {
+          window.clearTimeout(silenceTimeoutRef.current)
+        }
+
+        const spokenChunks = []
+        const interimChunks = []
+
+        for (let i = event.resultIndex; i < event.results.length; i += 1) {
+          const segment = event.results[i]
+          const piece = segment[0]?.transcript || ''
+          if (!piece) continue
+
+          if (segment?.isFinal) {
+            spokenChunks.push(piece)
+          } else {
+            interimChunks.push(piece)
+          }
+        }
+
+        interimTranscriptRef.current = interimChunks.join(', ').trim()
+
+        if (spokenChunks.length > 0) {
+          const spokenSymptoms = parseSymptomsFromSpeech(spokenChunks.join(', '))
+          const nextText = spokenSymptoms.reduce(
+            (current, symptom) => ensureSymptomInText(current, symptom),
+            symptomsValueRef.current,
+          )
+
+          onChange('symptoms', nextText)
+          symptomsValueRef.current = nextText
+          setShowSuggestions(false)
+        }
+
+        // Auto-stop after a short silence so input feels responsive and final text is committed.
+        silenceTimeoutRef.current = window.setTimeout(() => {
+          recognitionRef.current?.stop()
+        }, 4500)
       }
       recognitionRef.current = recognition
     }
 
-    recognitionRef.current.start()
+    if (isStartingRef.current || isRecording) return
+
+    try {
+      isStartingRef.current = true
+      recognitionRef.current.start()
+    } catch (error) {
+      isStartingRef.current = false
+      if (error?.name !== 'InvalidStateError') {
+        setSpeechError('Unable to start microphone right now. Please try again.')
+      }
+    }
   }
 
   const stopSpeech = () => {
+    isStartingRef.current = false
+    if (silenceTimeoutRef.current) {
+      window.clearTimeout(silenceTimeoutRef.current)
+    }
     recognitionRef.current?.stop()
   }
 
@@ -171,6 +299,8 @@ function QuestionFlow({
                 {isRecording ? <FiMicOff /> : <FiMic />}
               </button>
             </div>
+
+            {speechError ? <p className="text-xs text-red-600">{speechError}</p> : null}
 
             {symptomHistory.length > 0 ? (
               <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">

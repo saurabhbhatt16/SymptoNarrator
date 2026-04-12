@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { FiCalendar, FiClock, FiUser, FiUsers } from 'react-icons/fi'
 
 const CARD_CONFIG = [
@@ -62,4 +63,4 @@ function SummaryCards({ stats, onCardClick }) {
   )
 }
 
-export default SummaryCards
+export default memo(SummaryCards)

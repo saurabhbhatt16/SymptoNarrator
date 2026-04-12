@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import AdminNavbar from '../../components/admin/AdminNavbar'
 import SummaryCards from '../../components/admin/SummaryCards'
@@ -14,6 +14,11 @@ import {
   verifyAdminDoctorApi,
   deleteAdminUserApi,
 } from '../../services/admin.service'
+
+const DASHBOARD_CACHE = {
+  data: null,
+  promise: null,
+}
 
 const INITIAL_STATS = {
   totalPatients: 0,
@@ -37,50 +42,87 @@ function AdminDashboard() {
   const [openModalType, setOpenModalType] = useState('')
   const [actionLoadingId, setActionLoadingId] = useState(null)
 
-  useEffect(() => {
-    const loadDashboard = async () => {
-      setLoading(true)
-      setError('')
-
-      try {
-        const [statsResponse, usersResponse, doctorsResponse, pendingDoctorsResponse, appointmentsResponse] = await Promise.all([
-          getAdminStatsApi(),
-          getAdminUsersApi(),
-          getAdminDoctorsApi(),
-          getAdminPendingDoctorsApi(),
-          getAdminAppointmentsApi(),
-        ])
-
-        setStats({ ...INITIAL_STATS, ...statsResponse })
-        setPatients((usersResponse.data || []).filter((user) => user.role === 'patient'))
-        setDoctors((doctorsResponse.data || []).filter((doctor) => doctor.isVerified))
-        setPendingDoctors((pendingDoctorsResponse.data || []).filter((doctor) => !doctor.isVerified))
-        setAppointments(appointmentsResponse.data || [])
-      } catch (requestError) {
-        setError(requestError?.response?.data?.message || 'Failed to load admin dashboard data')
-      } finally {
-        setLoading(false)
-      }
+  const fetchDashboardData = useCallback(async (forceRefresh = false) => {
+    if (!forceRefresh && DASHBOARD_CACHE.data) {
+      return DASHBOARD_CACHE.data
     }
 
-    loadDashboard()
-  }, [])
+    if (DASHBOARD_CACHE.promise) {
+      return DASHBOARD_CACHE.promise
+    }
 
-  const reloadDashboard = async () => {
-    const [statsResponse, usersResponse, doctorsResponse, pendingDoctorsResponse, appointmentsResponse] = await Promise.all([
+    DASHBOARD_CACHE.promise = Promise.all([
       getAdminStatsApi(),
       getAdminUsersApi(),
       getAdminDoctorsApi(),
       getAdminPendingDoctorsApi(),
       getAdminAppointmentsApi(),
     ])
+      .then(([statsResponse, usersResponse, doctorsResponse, pendingDoctorsResponse, appointmentsResponse]) => {
+        const nextData = {
+          stats: { ...INITIAL_STATS, ...statsResponse },
+          patients: (usersResponse.data || []).filter((user) => user.role === 'patient'),
+          doctors: (doctorsResponse.data || []).filter((doctor) => doctor.isVerified),
+          pendingDoctors: (pendingDoctorsResponse.data || []).filter((doctor) => !doctor.isVerified),
+          appointments: appointmentsResponse.data || [],
+        }
 
-    setStats({ ...INITIAL_STATS, ...statsResponse })
-    setPatients((usersResponse.data || []).filter((user) => user.role === 'patient'))
-    setDoctors((doctorsResponse.data || []).filter((doctor) => doctor.isVerified))
-    setPendingDoctors((pendingDoctorsResponse.data || []).filter((doctor) => !doctor.isVerified))
-    setAppointments(appointmentsResponse.data || [])
-  }
+        DASHBOARD_CACHE.data = nextData
+        return nextData
+      })
+      .finally(() => {
+        DASHBOARD_CACHE.promise = null
+      })
+
+    return DASHBOARD_CACHE.promise
+  }, [])
+
+  useEffect(() => {
+    let isActive = true
+
+    const loadDashboard = async () => {
+      setLoading(true)
+      setError('')
+
+      try {
+        const nextData = await fetchDashboardData(false)
+
+        if (!isActive) {
+          return
+        }
+
+        setStats(nextData.stats)
+        setPatients(nextData.patients)
+        setDoctors(nextData.doctors)
+        setPendingDoctors(nextData.pendingDoctors)
+        setAppointments(nextData.appointments)
+      } catch (requestError) {
+        if (isActive) {
+          setError(requestError?.response?.data?.message || 'Failed to load admin dashboard data')
+        }
+      } finally {
+        if (isActive) {
+          setLoading(false)
+        }
+      }
+    }
+
+    loadDashboard()
+
+    return () => {
+      isActive = false
+    }
+  }, [fetchDashboardData])
+
+  const reloadDashboard = useCallback(async () => {
+    const nextData = await fetchDashboardData(true)
+
+    setStats(nextData.stats)
+    setPatients(nextData.patients)
+    setDoctors(nextData.doctors)
+    setPendingDoctors(nextData.pendingDoctors)
+    setAppointments(nextData.appointments)
+  }, [fetchDashboardData])
 
   const handleVerifyDoctor = async (doctorId) => {
     setActionLoadingId(doctorId)

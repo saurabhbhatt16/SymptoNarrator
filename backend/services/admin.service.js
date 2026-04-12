@@ -168,7 +168,6 @@ async function getAllDoctors() {
       },
     }))
 
-    console.log('All Doctors:', allDoctors)
     return allDoctors
   })
 }
@@ -205,7 +204,6 @@ async function getPendingDoctors() {
       },
     }))
 
-    console.log('Pending Doctors:', pendingDoctors)
     return pendingDoctors
   })
 }

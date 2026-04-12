@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import {
   Bar,
   BarChart,
@@ -84,4 +85,4 @@ function Charts({ stats }) {
   )
 }
 
-export default Charts
+export default memo(Charts)
