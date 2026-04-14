@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { FiCamera, FiUser } from 'react-icons/fi'
 
 function EditProfileModal({ isOpen, initialValues, onClose, onSave, saving }) {
-  const [form, setForm] = useState({ name: '', age: '', gender: '', phone: '' })
+  const [form, setForm] = useState({ name: '', age: '', gender: '', phone: '', bloodGroup: '' })
   const [profileImage, setProfileImage] = useState('')
   const fileInputRef = useRef(null)
 
@@ -14,6 +14,7 @@ function EditProfileModal({ isOpen, initialValues, onClose, onSave, saving }) {
       age: initialValues?.age ?? '',
       gender: initialValues?.gender || '',
       phone: initialValues?.phone || '',
+      bloodGroup: initialValues?.bloodGroup || '',
     })
     setProfileImage(initialValues?.profileImage || '')
   }, [isOpen, initialValues])
@@ -196,6 +197,16 @@ function EditProfileModal({ isOpen, initialValues, onClose, onSave, saving }) {
             <input
               value={form.phone}
               onChange={(event) => onChange('phone', event.target.value)}
+              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-slate-700">Blood Group</label>
+            <input
+              value={form.bloodGroup}
+              onChange={(event) => onChange('bloodGroup', event.target.value)}
+              placeholder="Example: O+, A-, AB+"
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
             />
           </div>

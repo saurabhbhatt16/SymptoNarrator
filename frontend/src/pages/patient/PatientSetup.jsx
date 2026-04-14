@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import Button from '../../components/common/Button'
 import Input from '../../components/common/Input'
 import { createPatientProfileApi } from '../../services/auth.service'
@@ -33,6 +34,7 @@ function PatientSetup() {
       const updatedUser = { ...user, needsOnboarding: false }
       localStorage.setItem('user', JSON.stringify(updatedUser))
       dispatch(setAuth({ user: updatedUser, role, token }))
+      toast.success('Changes saved successfully')
       navigate('/patient/dashboard')
     } catch (error) {
       setApiError(error?.response?.data?.message || 'Failed to save patient profile')
@@ -77,13 +79,13 @@ function PatientSetup() {
 
             <div className="space-y-1">
               <label htmlFor="symptoms" className="block text-sm font-medium text-slate-700">
-                Symptoms
+                Symptoms (Optional)
               </label>
               <textarea
                 id="symptoms"
                 rows={4}
                 className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm outline-none transition focus:border-sky-300 focus:ring-2 focus:ring-sky-100"
-                {...register('symptoms', { required: 'Symptoms are required' })}
+                {...register('symptoms')}
               />
               {errors.symptoms ? <p className="text-xs text-red-500">{errors.symptoms.message}</p> : null}
             </div>

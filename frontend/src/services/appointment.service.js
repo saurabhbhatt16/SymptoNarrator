@@ -17,7 +17,7 @@ export async function getPatientAppointmentsApi() {
 }
 
 export async function getDoctorAppointmentsApi() {
-  const response = await api.get('/api/doctor/appointments')
+  const response = await api.get('/api/appointments/doctor')
   return response.data
 }
 

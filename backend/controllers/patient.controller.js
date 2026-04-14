@@ -7,7 +7,7 @@ const patientSchema = Joi.object({
   gender: Joi.string().trim().min(2).max(30).required(),
   phone: Joi.string().trim().min(7).max(20).allow('', null).optional(),
   bloodGroup: Joi.string().trim().min(2).max(10).required(),
-  symptoms: Joi.string().trim().min(2).required(),
+  symptoms: Joi.string().trim().min(2).allow('', null).optional(),
   medicalHistory: Joi.string().allow('').optional(),
 })
 
@@ -16,6 +16,7 @@ const updatePatientSchema = Joi.object({
   age: Joi.number().integer().min(0).max(130).optional(),
   gender: Joi.string().trim().min(1).max(30).allow('', null).optional(),
   phone: Joi.string().trim().max(30).allow('', null).optional(),
+  bloodGroup: Joi.string().trim().min(2).max(10).allow('', null).optional(),
   profileImage: Joi.string().allow('', null).optional(),
   symptoms: Joi.string().trim().min(2).allow('', null).optional(),
   medicalHistory: Joi.string().allow('', null).optional(),

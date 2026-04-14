@@ -42,7 +42,7 @@ function AppointmentDashboardCard({ appointments = [], loading = false }) {
 
   return (
     <div
-      onClick={() => navigate('/appointments')}
+      onClick={() => navigate('/patient/appointments')}
       className="group cursor-pointer rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg sm:p-6"
     >
       {/* Header */}
@@ -64,7 +64,7 @@ function AppointmentDashboardCard({ appointments = [], loading = false }) {
               {nextAppointment.doctor?.fullName || 'Doctor'}
             </p>
             <p className="text-sm text-slate-600">
-              {nextAppointment.doctor?.doctorProfile?.specialization || 'Specialist'}
+              {nextAppointment.doctor?.specialization || 'Specialist'}
             </p>
           </div>
 

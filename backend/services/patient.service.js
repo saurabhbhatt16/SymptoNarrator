@@ -17,7 +17,7 @@ async function createPatientProfile(userId, payload) {
       phone: payload.phone || null,
       profileImage: payload.profileImage || null,
       bloodGroup: payload.bloodGroup,
-      symptoms: payload.symptoms,
+      symptoms: payload.symptoms || null,
       medicalHistory: payload.medicalHistory || null,
     },
   })
@@ -80,6 +80,10 @@ async function updatePatientProfile(userId, payload) {
   const nextAge = Number.isInteger(payload.age) ? payload.age : existing.age
   const nextGender = payload.gender && String(payload.gender).trim() ? String(payload.gender).trim() : existing.gender
   const nextPhone = payload.phone == null ? existing.phone : payload.phone || null
+  const nextBloodGroup =
+    payload.bloodGroup == null
+      ? existing.bloodGroup
+      : String(payload.bloodGroup).trim() || existing.bloodGroup
   const nextSymptoms = payload.symptoms == null ? existing.symptoms : payload.symptoms || existing.symptoms
   const nextMedicalHistory = payload.medicalHistory == null ? existing.medicalHistory : payload.medicalHistory || null
   const nextProfileImage = payload.profileImage == null ? existing.profileImage : payload.profileImage || null
@@ -92,9 +96,9 @@ async function updatePatientProfile(userId, payload) {
       gender: nextGender,
       phone: nextPhone,
       profileImage: nextProfileImage,
+      bloodGroup: nextBloodGroup,
       symptoms: nextSymptoms,
       medicalHistory: nextMedicalHistory,
-      bloodGroup: existing.bloodGroup,
     },
     select: {
       id: true,

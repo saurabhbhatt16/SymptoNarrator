@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { FiArrowLeft, FiInfo } from 'react-icons/fi'
 import { createAppointmentApi, searchAvailableDoctorsApi } from '../../services/appointment.service'
@@ -62,6 +63,7 @@ function getTodayInputValue() {
 
 function BookAppointment() {
   const navigate = useNavigate()
+  const { user } = useSelector((state) => state.auth)
   const [selectedDate, setSelectedDate] = useState('')
   const [selectedTime, setSelectedTime] = useState('')
   const [preferredDoctors, setPreferredDoctors] = useState([])
@@ -122,7 +124,7 @@ function BookAppointment() {
         date: selectedDate,
         time: selectedTime,
       })
-      const payload = response.data || {}
+      const payload = response?.data ?? response ?? {}
 
       if (Array.isArray(payload)) {
         setPreferredDoctors(payload)
@@ -248,7 +250,7 @@ function BookAppointment() {
       setShowConfirmModal(false)
       setAppointmentTypeToBook(null)
       setSelectedDoctor(null)
-      navigate('/appointments')
+      navigate(user?.role === 'doctor' ? '/doctor/appointments' : '/appointments')
     } catch (bookError) {
       setError(bookError?.response?.data?.message || 'Failed to book appointment')
       toast.error(bookError?.response?.data?.message || 'Booking failed')
@@ -277,7 +279,7 @@ function BookAppointment() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => navigate('/appointments')}
+            onClick={() => navigate(user?.role === 'doctor' ? '/doctor/appointments' : '/appointments')}
             aria-label="Back to my appointments"
             className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100"
           >

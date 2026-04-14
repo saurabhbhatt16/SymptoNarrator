@@ -118,7 +118,6 @@ function AppointmentManagement() {
   }
 
   useEffect(() => {
-    if (!user?.id) return
     if (hasLoadedAppointmentsRef.current) return
     hasLoadedAppointmentsRef.current = true
 
@@ -370,7 +369,7 @@ function AppointmentManagement() {
               >
                 Chat with Doctor
               </button>
-              {isAppointmentVideoActive(appointment, now) ? (
+              {isAppointmentVideoActive(appointment) ? (
                 <button
                   type="button"
                   onClick={() => handleOpenVideoConsultation(appointment)}

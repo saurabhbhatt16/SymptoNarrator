@@ -63,13 +63,17 @@ const symptomFuse = new Fuse(SYMPTOM_DATASET, {
 
 function correctSymptoms(inputText) {
   const words = String(inputText || '')
-    .split(',')
+    .split(/[,;]+|\band\b|\bplus\b/i)
     .map((word) => word.trim())
     .filter(Boolean)
 
   const corrected = words.map((word) => {
     const result = symptomFuse.search(word)
-    return result.length ? result[0].item : word
+    if (!result.length) return word
+
+    const best = result[0]
+    // Keep original phrase when fuzzy confidence is weak to avoid harmful rewrites.
+    return best.score != null && best.score <= 0.28 ? best.item : word
   })
 
   return corrected.join(', ')
@@ -207,7 +211,6 @@ function PatientDashboard() {
   const loadDashboard = async () => {
     setLoading(true)
     setError('')
-    console.log('User:', user)
 
     try {
       const [profileResponse, appointmentsResponse] = await Promise.all([
@@ -236,7 +239,7 @@ function PatientDashboard() {
             name: nextProfile.user?.name || nextProfile.fullName || nextProfile.name || user?.name,
             needsOnboarding: false,
           },
-          role,
+          role: role || nextProfile?.user?.role || user?.role || 'patient',
           token,
         }),
       )
@@ -610,9 +613,17 @@ function PatientDashboard() {
         }
 
         const loweredSymptoms = correctedSymptoms.toLowerCase()
+        const hasCardioPattern =
+          loweredSymptoms.includes('chest pain') ||
+          loweredSymptoms.includes('chest tightness') ||
+          loweredSymptoms.includes('chest pressure') ||
+          loweredSymptoms.includes('pressure') ||
+          loweredSymptoms.includes('radiating arm pain') ||
+          loweredSymptoms.includes('arm pain')
+
         const heuristicDisease =
-          loweredSymptoms.includes('chest pain') || loweredSymptoms.includes('breath')
-            ? 'Cardio-Respiratory Concern'
+          hasCardioPattern || loweredSymptoms.includes('breath')
+            ? 'Angina'
             : loweredSymptoms.includes('fever') || loweredSymptoms.includes('cough')
               ? 'Possible Viral Infection'
               : loweredSymptoms.includes('headache')
@@ -620,7 +631,7 @@ function PatientDashboard() {
                 : 'General health concern'
 
         const heuristicCategory =
-          loweredSymptoms.includes('chest pain') || loweredSymptoms.includes('breath')
+          hasCardioPattern || loweredSymptoms.includes('breath')
             ? 'Cardiovascular'
             : loweredSymptoms.includes('fever') || loweredSymptoms.includes('cough')
               ? 'Respiratory'
@@ -652,13 +663,17 @@ function PatientDashboard() {
           prediction?.disease_category || prediction?.category || prediction?.specialist_doctor || heuristicCategory
 
         const fallbackDisease = prediction?.disease_name || prediction?.disease || heuristicDisease
-        const fallbackSpecialist = prediction?.specialist_doctor || 'General Physician'
+        const fallbackSpecialist = prediction?.specialist_doctor || (hasCardioPattern ? 'Cardiologist' : 'General Physician')
         const fallbackPrevalence = prediction?.prevalence || ''
         const fallbackMinDays = Number.isFinite(Number(prediction?.min_recovery_days))
           ? Number(prediction.min_recovery_days)
+          : hasCardioPattern
+            ? 30
           : null
         const fallbackMaxDays = Number.isFinite(Number(prediction?.max_recovery_days))
           ? Number(prediction.max_recovery_days)
+          : hasCardioPattern
+            ? 60
           : null
 
         const fallbackSummary =
@@ -759,17 +774,22 @@ function PatientDashboard() {
 
     setSavingProfile(true)
     try {
-      const response = await updatePatientProfileApi({
+      const nextBloodGroup = String(form.bloodGroup || profile.bloodGroup || '').trim()
+
+      await updatePatientProfileApi({
         name: String(form.name || profile.fullName || profile.name || user?.name || '').trim(),
         age: parsedAge,
         gender: String(form.gender || profile.gender || '').trim(),
         phone: String(form.phone || '').trim(),
+        bloodGroup: nextBloodGroup,
         profileImage: form.profileImage,
         symptoms: profile?.symptoms || answers.symptoms || 'Not specified',
         medicalHistory: profile?.medicalHistory || answers.previousIllness || '',
       })
 
-      setProfile(response)
+      // Refresh from DB so profile card always reflects persisted values.
+      const refreshedProfile = await getPatientProfileApi()
+      setProfile(refreshedProfile)
       setEditOpen(false)
       toast.success('Profile updated successfully')
     } catch (error) {

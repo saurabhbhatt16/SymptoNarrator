@@ -8,6 +8,7 @@ const {
   getDoctorsBySpecialist,
   generateHealthReportWithDoctors,
 } = require('../services/ai.service')
+const { createReportForUserId } = require('../services/report.service')
 
 async function saveGeneratedReport({ userId, report }) {
   if (!Number.isInteger(userId) || userId <= 0) {
@@ -18,26 +19,15 @@ async function saveGeneratedReport({ userId, report }) {
     return null
   }
 
-  const generatedAtRaw = report.generatedAt || report.createdAt || null
-  const generatedAt = generatedAtRaw ? new Date(generatedAtRaw) : new Date()
-  const safeGeneratedAt = Number.isNaN(generatedAt.getTime()) ? new Date() : generatedAt
+  const saved = await createReportForUserId(userId, report)
 
-  const saved = await prisma.report.create({
-    data: {
-      patientId: userId,
-      reportData: report,
-      summary: typeof report.summary === 'string' ? report.summary : null,
-      generatedAt: safeGeneratedAt,
-    },
-    select: {
-      id: true,
-      patientId: true,
-      generatedAt: true,
-      createdAt: true,
-    },
-  })
-
-  return saved
+  return {
+    id: saved?.id || saved?.reportId || null,
+    reportId: saved?.reportId || saved?.id || null,
+    patientId: saved?.patientId || userId,
+    generatedAt: saved?.generatedAt || null,
+    createdAt: saved?.createdAt || null,
+  }
 }
 
 const respondSchema = Joi.object({
@@ -110,12 +100,21 @@ async function analyze(req, res, next) {
       })
     }
 
-    // Get user info from authenticated session
+    // Get user info from authenticated session and enrich with patient profile demographics.
+    const patientProfile = await prisma.patientProfile.findUnique({
+      where: { userId: req.user.id },
+      select: {
+        fullName: true,
+        age: true,
+        gender: true,
+      },
+    })
+
     const userInfo = {
       id: req.user?.id,
-      name: req.user?.name,
-      age: req.user?.age,
-      gender: req.user?.gender,
+      name: patientProfile?.fullName || req.user?.name,
+      age: patientProfile?.age ?? req.user?.age,
+      gender: patientProfile?.gender || req.user?.gender,
     }
 
     // Generate report with doctors

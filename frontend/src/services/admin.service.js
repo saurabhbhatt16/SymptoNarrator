@@ -1,5 +1,10 @@
 import api from './api'
 
+export async function getAdminDashboardApi() {
+  const response = await api.get('/api/admin/dashboard')
+  return response.data
+}
+
 export async function getAdminStatsApi() {
   const response = await api.get('/api/admin/stats')
   return response.data

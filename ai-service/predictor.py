@@ -5,8 +5,45 @@ Main prediction engine using TF-IDF and similarity matching
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from model import df, vectorizer, X
-from nlp import clean_text, tokenize
+from nlp import clean_text, tokenize, split_symptom_phrases
 from rules import get_final_severity, is_emergency
+
+def _jaccard_similarity(left_tokens, right_tokens):
+    left = set(left_tokens)
+    right = set(right_tokens)
+    if not left or not right:
+        return 0.0
+    return len(left & right) / len(left | right)
+
+def _compute_overlap_scores(user_symptoms):
+    user_phrases = split_symptom_phrases(user_symptoms)
+    user_phrase_tokens = [set(tokenize(phrase)) for phrase in user_phrases]
+    user_tokens = set(tokenize(' '.join(user_phrases)))
+
+    exact_overlap_scores = np.zeros(len(df), dtype=float)
+    token_overlap_scores = np.zeros(len(df), dtype=float)
+
+    for idx, disease_row in df.iterrows():
+      disease_phrases = split_symptom_phrases(disease_row.get('Symptoms', ''))
+      disease_phrase_tokens = [set(tokenize(phrase)) for phrase in disease_phrases]
+      disease_tokens = set(tokenize(' '.join(disease_phrases)))
+
+      if user_phrases and disease_phrase_tokens:
+          matched = 0
+          for user_token_set in user_phrase_tokens:
+              best = 0.0
+              for disease_token_set in disease_phrase_tokens:
+                  score = _jaccard_similarity(user_token_set, disease_token_set)
+                  if score > best:
+                      best = score
+              if best >= 0.6:
+                  matched += 1
+
+          exact_overlap_scores[idx] = matched / max(1, len(user_phrase_tokens))
+
+      token_overlap_scores[idx] = _jaccard_similarity(user_tokens, disease_tokens)
+
+    return exact_overlap_scores, token_overlap_scores
 
 def predict(user_symptoms):
     """
@@ -24,10 +61,20 @@ def predict(user_symptoms):
     
     # Calculate cosine similarity with all diseases
     similarity_scores = cosine_similarity(user_vec, X).flatten()
+
+    # Calculate phrase/token overlap scores for medically meaningful symptom alignment
+    exact_overlap_scores, token_overlap_scores = _compute_overlap_scores(user_symptoms)
+
+    # Blend semantic (TF-IDF) and structured overlap signals.
+    final_scores = (
+        (0.55 * exact_overlap_scores)
+        + (0.25 * token_overlap_scores)
+        + (0.20 * similarity_scores)
+    )
     
     # Get top match index
-    top_idx = np.argmax(similarity_scores)
-    top_score = similarity_scores[top_idx]
+    top_idx = int(np.argmax(final_scores))
+    top_score = float(final_scores[top_idx])
     
     # Return matched disease as dictionary
     disease = df.iloc[top_idx]
@@ -45,7 +92,10 @@ def predict(user_symptoms):
         'min_recovery_days': int(disease['Min_Recovery_Days']),
         'max_recovery_days': int(disease['Max_Recovery_Days']),
         'prevalence': disease['Prevalence'],
-        'similarity_score': float(top_score),
+        'similarity_score': float(similarity_scores[top_idx]),
+        'final_match_score': top_score,
+        'exact_overlap_score': float(exact_overlap_scores[top_idx]),
+        'token_overlap_score': float(token_overlap_scores[top_idx]),
         'match_confidence': f"{float(top_score) * 100:.2f}%"
     }
 

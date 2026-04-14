@@ -11,8 +11,18 @@ export async function loginApi(payload) {
 }
 
 export async function createPatientProfileApi(payload) {
-  const response = await api.post('/api/patient/profile', payload)
-  return response.data
+  try {
+    const response = await api.post('/api/patient/profile', payload)
+    return response.data
+  } catch (error) {
+    // If profile already exists, treat setup save as an update.
+    if (error?.response?.status === 409) {
+      const response = await api.patch('/api/patient/profile', payload)
+      return response.data
+    }
+
+    throw error
+  }
 }
 
 export async function createDoctorProfileApi(payload) {

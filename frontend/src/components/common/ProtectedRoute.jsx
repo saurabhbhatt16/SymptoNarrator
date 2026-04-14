@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux'
 
 function ProtectedRoute({ children, requiredRole, allowUnverifiedDoctor = false, allowIncompleteDoctor = false }) {
   const { isAuthenticated, role, user } = useSelector((state) => state.auth)
-  const isDoctor = role === 'doctor'
+  const effectiveRole = role || user?.role
+  const isDoctor = effectiveRole === 'doctor'
   const isVerifiedDoctor = Boolean(user?.isVerified)
   const isProfileCompleted = user?.profileCompleted ?? !user?.needsOnboarding
 
@@ -11,7 +12,7 @@ function ProtectedRoute({ children, requiredRole, allowUnverifiedDoctor = false,
     return <Navigate to="/login" replace />
   }
 
-  if (requiredRole && role !== requiredRole) {
+  if (requiredRole && effectiveRole !== requiredRole) {
     return <Navigate to="/dashboard" replace />
   }
 

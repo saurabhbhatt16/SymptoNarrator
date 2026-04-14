@@ -23,6 +23,28 @@ async function stats(req, res, next) {
   }
 }
 
+async function dashboard(req, res, next) {
+  try {
+    const [statsData, usersData, doctorsData, pendingDoctorsData, appointmentsData] = await Promise.all([
+      getAdminStats(),
+      getAllUsers(),
+      getAllDoctors(),
+      getPendingDoctors(),
+      getAllAppointments(),
+    ])
+
+    return res.status(200).json({
+      stats: statsData,
+      users: usersData,
+      doctors: doctorsData,
+      pendingDoctors: pendingDoctorsData,
+      appointments: appointmentsData,
+    })
+  } catch (err) {
+    return next(err)
+  }
+}
+
 async function users(req, res, next) {
   try {
     const data = await getAllUsers()
@@ -105,6 +127,7 @@ async function appointments(req, res, next) {
 }
 
 module.exports = {
+  dashboard,
   stats,
   users,
   removeUser,

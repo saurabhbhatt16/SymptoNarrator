@@ -5,11 +5,7 @@ import SummaryCards from '../../components/admin/SummaryCards'
 import Charts from '../../components/admin/Charts'
 import Modals from '../../components/admin/Modals'
 import {
-  getAdminAppointmentsApi,
-  getAdminDoctorsApi,
-  getAdminPendingDoctorsApi,
-  getAdminStatsApi,
-  getAdminUsersApi,
+  getAdminDashboardApi,
   rejectAdminDoctorApi,
   verifyAdminDoctorApi,
   deleteAdminUserApi,
@@ -51,20 +47,14 @@ function AdminDashboard() {
       return DASHBOARD_CACHE.promise
     }
 
-    DASHBOARD_CACHE.promise = Promise.all([
-      getAdminStatsApi(),
-      getAdminUsersApi(),
-      getAdminDoctorsApi(),
-      getAdminPendingDoctorsApi(),
-      getAdminAppointmentsApi(),
-    ])
-      .then(([statsResponse, usersResponse, doctorsResponse, pendingDoctorsResponse, appointmentsResponse]) => {
+    DASHBOARD_CACHE.promise = getAdminDashboardApi()
+      .then((dashboardResponse) => {
         const nextData = {
-          stats: { ...INITIAL_STATS, ...statsResponse },
-          patients: (usersResponse.data || []).filter((user) => user.role === 'patient'),
-          doctors: (doctorsResponse.data || []).filter((doctor) => doctor.isVerified),
-          pendingDoctors: (pendingDoctorsResponse.data || []).filter((doctor) => !doctor.isVerified),
-          appointments: appointmentsResponse.data || [],
+          stats: { ...INITIAL_STATS, ...(dashboardResponse?.stats || {}) },
+          patients: (dashboardResponse?.users || []).filter((user) => user.role === 'patient'),
+          doctors: (dashboardResponse?.doctors || []).filter((doctor) => doctor.isVerified),
+          pendingDoctors: (dashboardResponse?.pendingDoctors || []).filter((doctor) => !doctor.isVerified),
+          appointments: dashboardResponse?.appointments || [],
         }
 
         DASHBOARD_CACHE.data = nextData

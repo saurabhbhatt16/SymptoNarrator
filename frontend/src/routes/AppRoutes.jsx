@@ -19,6 +19,7 @@ import DoctorWaiting from '../pages/doctor/DoctorWaiting'
 import DoctorSetupSuccess from '../pages/doctor/DoctorSetupSuccess'
 import PatientSetup from '../pages/patient/PatientSetup'
 import DoctorSetup from '../pages/doctor/DoctorSetup'
+import HomePage from '../pages/public/HomePage'
 import ProtectedRoute from '../components/common/ProtectedRoute'
 import AdminRoute from '../components/common/AdminRoute'
 import PatientLayout from '../components/layout/PatientLayout'
@@ -36,9 +37,15 @@ function DashboardRoute() {
   return <Navigate to={destination} replace />
 }
 
+function HomeRoute() {
+  const { isAuthenticated, user } = useSelector((state) => state.auth)
+  return isAuthenticated ? <Navigate to={getPostAuthRoute(user)} replace /> : <HomePage />
+}
+
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<HomeRoute />} />
       <Route
         path="/login"
         element={
@@ -160,7 +167,6 @@ function AppRoutes() {
           }
         />
 
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Route>
 
       <Route
@@ -208,7 +214,7 @@ function AppRoutes() {
           path="book"
           element={
             <ProtectedRoute requiredRole="doctor">
-              <BookAppointment />
+              <Navigate to="/doctor/appointments" replace />
             </ProtectedRoute>
           }
         />

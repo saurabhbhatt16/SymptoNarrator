@@ -117,7 +117,6 @@ async function getAvailableDoctors({ date, time, patientId }) {
 
   const availableDoctorIds = [...new Set(rows.map((row) => row.doctorId))]
   if (availableDoctorIds.length === 0) {
-    console.log('Available doctors:', [])
     return []
   }
 
@@ -197,7 +196,6 @@ async function getAvailableDoctors({ date, time, patientId }) {
     totalAvailable: doctors.length,
   }
 
-  console.log('Available doctors result:', result)
   return result
 }
 
@@ -313,7 +311,6 @@ async function createAppointment({ patientId, doctorId, date, time, appointmentT
     },
   })
 
-  console.log('Appointment booked:', appointment)
   return appointment
 }
 
@@ -444,7 +441,6 @@ async function updateAppointmentStatus(doctorUserId, appointmentId, status) {
     },
   })
 
-  console.log('Status updated:', status)
   return updated
 }
 
