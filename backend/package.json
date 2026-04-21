@@ -5,8 +5,11 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "kill-port 5000 && node src/server.js",
+    "start": "node src/server.js",
     "start:raw": "node src/server.js",
+    "ai:start": "set APP_ENV=production&& set PYTHONUTF8=1&& set PYTHONIOENCODING=utf-8&& ..\\..\\.venv\\Scripts\\python.exe ..\\ai-service\\app.py",
+    "backend:start:with-ai": "wait-on http-get://127.0.0.1:8000/health && set AI_SERVICE_URL=http://127.0.0.1:8000&& npm run start:raw",
+    "start:core": "kill-port 5000 8000 && concurrently --restart-tries 10 --restart-after 2000 -n AI,BACKEND -c cyan,green \"npm run ai:start\" \"npm run backend:start:with-ai\"",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "seed:admin": "node prisma/seed-admin.js",
@@ -31,6 +34,8 @@
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.14",
+    "wait-on": "^7.2.0"
   }
 }

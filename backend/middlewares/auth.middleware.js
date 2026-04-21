@@ -1,17 +1,26 @@
-const jwt = require('jsonwebtoken')
-const prisma = require('../config/prisma')
+const jwt = require("jsonwebtoken");
+const prisma = require("../config/prisma");
+const logger = require("../src/utils/logger");
 
 async function authMiddleware(req, res, next) {
   try {
-    const authHeader = req.headers.authorization
-    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null
+    const authHeader = req.headers.authorization;
+    const token =
+      authHeader && authHeader.startsWith("Bearer ")
+        ? authHeader.split(" ")[1]
+        : null;
+    const debugFlow = process.env.DEBUG_SYMPTOM_FLOW === "true";
 
     if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' })
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    const userId = decoded.id || decoded.userId
+    if (debugFlow) {
+      logger.debug("[SymptomFlow][Auth] Bearer token detected:", Boolean(token));
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.id || decoded.userId;
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -28,30 +37,42 @@ async function authMiddleware(req, res, next) {
           },
         },
       },
-    })
+    });
 
     if (!user) {
-      return res.status(401).json({ message: 'Unauthorized' })
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     req.user = {
       ...user,
       id: user.id,
       userId: user.id,
-      doctorId: user.role === 'doctor' ? user.doctorProfile?.id : undefined,
+      doctorId: user.role === "doctor" ? user.doctorProfile?.id : undefined,
       isVerified:
-        user.role === 'doctor'
-          ? Boolean(user.isVerified || user.doctorProfile?.isVerified || user.doctorProfile?.verified)
+        user.role === "doctor"
+          ? Boolean(
+              user.isVerified ||
+              user.doctorProfile?.isVerified ||
+              user.doctorProfile?.verified,
+            )
           : true,
       profileCompleted:
-        user.role === 'doctor'
-          ? Boolean(user.doctorProfile?.id)
-          : true,
+        user.role === "doctor" ? Boolean(user.doctorProfile?.id) : true,
+    };
+
+    if (debugFlow) {
+      logger.debug("[SymptomFlow][Auth] req.user attached:", {
+        id: req.user.id,
+        role: req.user.role,
+        userId: req.user.userId,
+        doctorId: req.user.doctorId,
+      });
     }
-    return next()
+
+    return next();
   } catch (_err) {
-    return res.status(401).json({ message: 'Invalid or expired token' })
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 }
 
-module.exports = authMiddleware
+module.exports = authMiddleware;

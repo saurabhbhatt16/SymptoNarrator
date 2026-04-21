@@ -5,15 +5,51 @@ Flask API for AI Symptom Checker Service
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from predictor import predict, generate_report, get_specialist_for_disease
+from nlp import tokenize
+from deep_translator import GoogleTranslator
+from langdetect import detect, LangDetectException
 import traceback
 import sys
 import os
 from dotenv import load_dotenv
+import logging
 
 # Load environment variables from .env file
 load_dotenv()
 
+# Keep AI service terminal output production-like: hide request/debug noise.
+logging.getLogger("werkzeug").setLevel(logging.ERROR)
+
 app = Flask(__name__)
+
+
+def detect_language(text):
+    candidate = str(text or "").strip()
+    if not candidate:
+        return "en"
+
+    try:
+        return detect(candidate)
+    except LangDetectException:
+        return "en"
+
+
+def translate_text(text, target_language):
+    source_text = str(text or "")
+    target = str(target_language or "en").strip().lower()
+
+    if not source_text:
+        return source_text
+
+    if not target or target == "en":
+        return source_text
+
+    try:
+        translated = GoogleTranslator(source="auto", target=target).translate(source_text)
+        return translated if isinstance(translated, str) and translated.strip() else source_text
+    except Exception:
+        # Keep behavior stable if translation service is unavailable.
+        return source_text
 
 # CORS configuration - allow requests from backend
 CORS(app, origins=[
@@ -110,6 +146,7 @@ def analyze_endpoint():
             }), 400
         
         symptoms = data.get('symptoms', '').strip()
+        original_input = str(data.get('original_input', '')).strip()
         days = data.get('days', 1)
         user_info = data.get('user', {})
         
@@ -118,9 +155,17 @@ def analyze_endpoint():
                 'error': 'Symptoms field cannot be empty',
                 'status': 'failed'
             }), 400
+
+        # Tokenization retained for model consistency, but internal debug output is suppressed.
+        tokenize(symptoms)
         
         # Generate report
         report = generate_report(symptoms, days, user_info)
+
+        if isinstance(report, dict) and report.get('status') == 'success':
+            existing_summary = str(report.get('summary', '') or '')
+            detected_language = detect_language(original_input or symptoms)
+            report['translated_summary'] = translate_text(existing_summary, detected_language)
         
         return jsonify(report), 200
     
@@ -169,6 +214,33 @@ def report_endpoint():
     """
     return analyze_endpoint()
 
+
+@app.route('/api/translate', methods=['POST'])
+def translate_endpoint():
+    """Translate arbitrary text to a target language."""
+    try:
+        data = request.json or {}
+        text = str(data.get('text', '')).strip()
+        target_language = str(data.get('target_language', 'en')).strip().lower()
+
+        if not text:
+            return jsonify({
+                'error': 'Missing required field: text',
+                'status': 'failed'
+            }), 400
+
+        translated_text = translate_text(text, target_language)
+        return jsonify({
+            'status': 'success',
+            'translated_text': translated_text
+        }), 200
+    except Exception as e:
+        print(f"Error in /api/translate: {str(e)}", file=sys.stderr)
+        return jsonify({
+            'error': str(e),
+            'status': 'failed'
+        }), 500
+
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors"""
@@ -188,16 +260,8 @@ def server_error(error):
 if __name__ == '__main__':
     app_port = int(os.getenv("APP_PORT", 8000))
     app_env = os.getenv("APP_ENV", "development")
-    debug_mode = app_env == "development"
-    
-    print("🚀 Starting MediSense AI Symptom Checker Service...")
-    print(f"📍 Flask API running on http://localhost:{app_port}")
-    print(f"🔧 Environment: {app_env}")
-    print("\nEndpoints:")
-    print("  GET  /health")
-    print("  POST /api/predict")
-    print("  POST /api/analyze")
-    print("  POST /api/report")
-    print("  GET  /api/specialist/<disease_name>")
-    
-    app.run(debug=debug_mode, host='0.0.0.0', port=app_port)
+    debug_mode = False
+
+    print(f"AI service running on http://localhost:{app_port} ({app_env})")
+
+    app.run(debug=debug_mode, host='0.0.0.0', port=app_port, use_reloader=False)

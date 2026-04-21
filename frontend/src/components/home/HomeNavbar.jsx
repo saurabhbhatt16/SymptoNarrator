@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { HiMenu, HiX } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
+import logo from '../../assets/logo.png'
 
 const navItems = [
   { label: 'Services', href: '#services' },
@@ -15,18 +16,18 @@ function HomeNavbar() {
     <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur">
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <a href="#top" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-emerald-500 text-lg font-bold text-white shadow-md">
-            S
-          </div>
-          <span className="text-xl font-bold tracking-tight text-slate-800">SymptoNarrator</span>
+          <img src={logo} alt="SymptoNarrator logo" className="h-13 w-13 object-contain sm:h-14 sm:w-14" />
+          <span className="text-[1.15rem] font-semibold tracking-[0.02em] text-slate-800 sm:text-[1.2rem]">
+            SymptoNarrator
+          </span>
         </a>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-9 md:flex">
           {navItems.map((item) => (
             <li key={item.label}>
               <a
                 href={item.href}
-                className="text-sm font-medium text-slate-600 transition hover:text-sky-600"
+                className="text-[0.98rem] font-medium tracking-wide text-slate-600 transition duration-300 hover:text-sky-700"
               >
                 {item.label}
               </a>
@@ -37,7 +38,7 @@ function HomeNavbar() {
         <div className="hidden md:block">
           <Link
             to="/login"
-            className="inline-flex items-center rounded-xl bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700"
+            className="inline-flex items-center rounded-xl bg-linear-to-r from-sky-600 to-emerald-600 px-5 py-2.5 text-[0.95rem] font-semibold text-white shadow-lg shadow-sky-200/60 transition duration-300 hover:-translate-y-0.5 hover:from-sky-700 hover:to-emerald-700"
           >
             Get Started
           </Link>
@@ -61,7 +62,7 @@ function HomeNavbar() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg px-2 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-sky-600"
+                className="rounded-lg px-2 py-2 text-base font-medium text-slate-600 transition hover:bg-slate-50 hover:text-sky-700"
               >
                 {item.label}
               </a>
@@ -69,7 +70,7 @@ function HomeNavbar() {
             <Link
               to="/login"
               onClick={() => setIsOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700"
+              className="mt-2 inline-flex items-center justify-center rounded-xl bg-linear-to-r from-sky-600 to-emerald-600 px-4 py-2.5 text-base font-semibold text-white shadow-lg shadow-sky-200/60 transition hover:from-sky-700 hover:to-emerald-700"
             >
               Get Started
             </Link>

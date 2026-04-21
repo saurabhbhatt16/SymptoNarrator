@@ -3,10 +3,16 @@ Main prediction engine using TF-IDF and similarity matching
 """
 
 import numpy as np
+import warnings
 from sklearn.metrics.pairwise import cosine_similarity
 from model import df, vectorizer, X
 from nlp import clean_text, tokenize, split_symptom_phrases
 from rules import get_final_severity, is_emergency
+
+warnings.filterwarnings(
+    "ignore",
+    message="The parameter 'stop_words' will not be used since 'analyzer' != 'word'",
+)
 
 def _jaccard_similarity(left_tokens, right_tokens):
     left = set(left_tokens)

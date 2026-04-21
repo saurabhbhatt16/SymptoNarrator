@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const logger = require("./utils/logger");
 const authRoutes = require("../routes/auth.routes");
 const patientRoutes = require("../routes/patient.routes");
 const doctorRoutes = require("../routes/doctor.routes");
@@ -12,11 +13,18 @@ const aiRoutes = require("../routes/ai.routes");
 const errorMiddleware = require("../middlewares/error.middleware");
 
 const app = express();
-const jsonBodyLimit = process.env.JSON_BODY_LIMIT || '10mb';
+const jsonBodyLimit = process.env.JSON_BODY_LIMIT || "10mb";
 
 app.use(cors());
 app.use(express.json({ limit: jsonBodyLimit }));
-app.use(morgan("dev"));
+app.use(
+  morgan(":method :url :status - :response-time ms", {
+    skip: (req) => req.path === "/health",
+    stream: {
+      write: (message) => logger.info(message.trim()),
+    },
+  }),
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/patient", patientRoutes);
