@@ -25,6 +25,7 @@ Major-Project/
 ## Tech Stack
 
 ### Frontend
+
 - React 19
 - Vite
 - Redux Toolkit
@@ -35,6 +36,7 @@ Major-Project/
 - Socket.IO Client
 
 ### Backend
+
 - Node.js
 - Express
 - Prisma ORM
@@ -44,6 +46,7 @@ Major-Project/
 - Socket.IO
 
 ### AI Service
+
 - Python
 - Flask
 - Flask-CORS
@@ -55,6 +58,7 @@ Major-Project/
 ## Role-Based Workflow
 
 ### Patient Workflow
+
 1. Register/login and complete patient profile.
 2. Submit symptoms and duration.
 3. Receive AI report with diagnosis summary and recommended specialist.
@@ -65,6 +69,7 @@ Major-Project/
 8. Use chat and consultation features based on appointment state.
 
 ### Doctor Workflow
+
 1. Login and manage profile and timetable availability.
 2. View incoming appointments.
 3. Accept or reject pending requests.
@@ -73,6 +78,7 @@ Major-Project/
 6. Use appointment chat and consultation views for communication.
 
 ### Admin Workflow
+
 1. Login via admin role.
 2. Review doctor and patient records.
 3. Verify doctor profiles and monitor system data.
@@ -215,6 +221,7 @@ Persistence guarantees include:
 - Set strong JWT secrets and secure DATABASE_URL.
 - Restrict CORS to trusted frontend domains.
 - Use managed PostgreSQL in production.
+- Use `npx prisma migrate deploy` for production releases instead of `npx prisma db push`.
 - Keep Prisma schema/migration strategy consistent across environments.
 - Add logging, monitoring, and backups before production rollout.
 

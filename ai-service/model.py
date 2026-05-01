@@ -24,6 +24,5 @@ vectorizer = TfidfVectorizer(
 # Fit vectorizer on symptoms
 X = vectorizer.fit_transform(df['Symptoms'])
 
-if os.getenv('LOG_LEVEL', 'info').strip().lower() == 'debug':
-    print(f"Dataset loaded: {len(df)} diseases")
-    print(f"Vectorizer fitted with {len(vectorizer.get_feature_names_out())} features")
+print(f"Dataset loaded: {len(df)} diseases")
+print(f"Vectorizer fitted with {len(vectorizer.get_feature_names_out())} features")

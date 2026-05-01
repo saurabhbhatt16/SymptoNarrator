@@ -12,15 +12,23 @@ import traceback
 import sys
 import os
 from dotenv import load_dotenv
-import logging
 
 # Load environment variables from .env file
 load_dotenv()
 
-# Keep AI service terminal output production-like: hide request/debug noise.
-logging.getLogger("werkzeug").setLevel(logging.ERROR)
-
 app = Flask(__name__)
+
+
+def read_int_env(name, default):
+    raw_value = os.environ.get(name, default)
+    try:
+        return int(str(raw_value).strip())
+    except (TypeError, ValueError):
+        print(
+            f"Warning: invalid {name}={raw_value!r}; falling back to {default}",
+            file=sys.stderr,
+        )
+        return int(default)
 
 
 def detect_language(text):
@@ -156,8 +164,13 @@ def analyze_endpoint():
                 'status': 'failed'
             }), 400
 
-        # Tokenization retained for model consistency, but internal debug output is suppressed.
-        tokenize(symptoms)
+        # Debug logs for end-to-end symptom lifecycle verification.
+        # Translation currently happens upstream before this service receives keywords.
+        translated_text = symptoms
+        symptom_tokens = tokenize(translated_text)
+        print("Original:", symptoms, flush=True)
+        print("Translated:", translated_text, flush=True)
+        print("Tokens:", symptom_tokens, flush=True)
         
         # Generate report
         report = generate_report(symptoms, days, user_info)
@@ -258,10 +271,8 @@ def server_error(error):
     }), 500
 
 if __name__ == '__main__':
-    app_port = int(os.getenv("APP_PORT", 8000))
-    app_env = os.getenv("APP_ENV", "development")
-    debug_mode = False
-
-    print(f"AI service running on http://localhost:{app_port} ({app_env})")
-
-    app.run(debug=debug_mode, host='0.0.0.0', port=app_port, use_reloader=False)
+    app.run(
+        debug=os.environ.get('FLASK_DEBUG', 'false').lower() == 'true',
+        host='0.0.0.0',
+        port=read_int_env('PORT', 8000)
+    )

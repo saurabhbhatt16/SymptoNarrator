@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const prisma = require("../config/prisma");
-const logger = require("../src/utils/logger");
 
 async function authMiddleware(req, res, next) {
   try {
@@ -16,7 +15,7 @@ async function authMiddleware(req, res, next) {
     }
 
     if (debugFlow) {
-      logger.debug("[SymptomFlow][Auth] Bearer token detected:", Boolean(token));
+      console.log("[SymptomFlow][Auth] Bearer token detected:", Boolean(token));
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -61,7 +60,7 @@ async function authMiddleware(req, res, next) {
     };
 
     if (debugFlow) {
-      logger.debug("[SymptomFlow][Auth] req.user attached:", {
+      console.log("[SymptomFlow][Auth] req.user attached:", {
         id: req.user.id,
         role: req.user.role,
         userId: req.user.userId,

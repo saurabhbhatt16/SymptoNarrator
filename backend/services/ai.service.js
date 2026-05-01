@@ -72,6 +72,7 @@ async function analyzeSymptoms({ symptoms, days, user, original_input }) {
     user,
     original_input,
   };
+  console.log("Sending to AI:", aiPayload);
 
   try {
     const response = await axios.post(
@@ -329,22 +330,27 @@ async function generateAiResponse({ message, predictedDisease, confidence }) {
 }
 
 async function predictSymptoms({ symptoms }) {
-  const aiServiceBaseUrl =
-    process.env.AI_SERVICE_URL || "http://localhost:8000";
   const keywordSymptoms = normalizeKeywordSymptoms(symptoms);
   const modelSymptoms = keywordSymptoms.join(", ");
 
   try {
-    const response = await axios.post(
-      `${aiServiceBaseUrl}/api/predict`,
+    const aiResponse = await axios.post(
+      `${AI_SERVICE_URL}/api/predict`,
       { symptoms: modelSymptoms },
-      { timeout: 10000 },
+      {
+        timeout: 15000,
+        validateStatus: null,
+      },
     );
-    return response.data;
+
+    if (!aiResponse || aiResponse.status !== 200 || !aiResponse.data) {
+      return { prediction: null, error: "AI service unavailable" };
+    }
+
+    return aiResponse.data;
   } catch (error) {
-    const serviceError = new Error("Unable to predict symptoms right now");
-    serviceError.statusCode = 502;
-    throw serviceError;
+    console.error("AI service call failed:", error.message);
+    return { prediction: null, error: "AI service timeout or unreachable" };
   }
 }
 

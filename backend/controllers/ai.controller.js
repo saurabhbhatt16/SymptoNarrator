@@ -141,6 +141,13 @@ async function analyze(req, res, next) {
       gender: patientProfile?.gender || req.user?.gender,
     };
 
+    const aiPayload = {
+      symptoms: value.symptoms,
+      language: value.language || "auto",
+      duration: value.days || 1,
+    };
+    console.log("AI Payload:", aiPayload);
+
     // Generate report with doctors
     const report = await generateHealthReportWithDoctors({
       original_input: value.original_input,
@@ -152,6 +159,12 @@ async function analyze(req, res, next) {
 
     let savedReport = null;
     try {
+      const reportData = {
+        userId: req.user?.id,
+        report,
+      };
+      console.log("Saving report:", reportData);
+
       savedReport = await saveGeneratedReport({
         userId: req.user?.id,
         report,
